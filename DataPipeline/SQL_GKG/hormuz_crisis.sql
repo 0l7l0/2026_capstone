@@ -1,6 +1,6 @@
 WITH base AS (
   SELECT
- 
+  
     CASE
       WHEN LENGTH(CAST(DATE AS STRING)) = 8  THEN CONCAT(CAST(DATE AS STRING), '000000')
       WHEN LENGTH(CAST(DATE AS STRING)) = 12 THEN CONCAT(CAST(DATE AS STRING), '00')
@@ -17,9 +17,11 @@ WITH base AS (
     V2Locations AS locations
   FROM `gdelt-bq.gdeltv2.gkg_partitioned`
   WHERE
-    _PARTITIONTIME >= TIMESTAMP('2021-01-29')
-    AND _PARTITIONTIME < TIMESTAMP('2022-12-16') 
+
+    _PARTITIONTIME >= TIMESTAMP('2019-01-01')
+    AND _PARTITIONTIME < TIMESTAMP('2019-09-23') 
     
+
     AND TranslationInfo IS NULL
     AND DocumentIdentifier IS NOT NULL
     AND DocumentIdentifier LIKE 'http%'
@@ -47,10 +49,11 @@ parsed AS (
 
 filtered AS (
   SELECT 
-    'russia_ukraine_war' AS event_label,
+    'hormuz_crisis' AS event_label,
     *
   FROM parsed
   WHERE
+
     (
       themes LIKE '%TAX_FNCACT_MILITARY%'
       OR themes LIKE '%WB_635_PEACE_AND_SECURITY%'
@@ -62,21 +65,18 @@ filtered AS (
       OR themes LIKE '%KILL%'
       OR themes LIKE '%DRONES%'
     )
+    AND 
+    (
+      (LOWER(organizations) LIKE '%irgc%' OR LOWER(organizations) LIKE '%revolutionary guard%')
+      OR (LOWER(locations) LIKE '%iran%' OR LOWER(locations) LIKE '%hormuz%' OR LOWER(locations) LIKE '%persian gulf%')
+    )
     AND (
-          LOWER(persons) LIKE '%putin%'
-          OR LOWER(persons) LIKE '%zelensky%'
-          OR LOWER(locations) LIKE '%ukraine%'
-          OR LOWER(locations) LIKE '%kyiv%'
-          OR LOWER(locations) LIKE '%donbas%'
-          OR LOWER(locations) LIKE '%russia%'
-        )
-        AND (
-          themes LIKE '%ARMEDCONFLICT%'
-          OR themes LIKE '%TAX_FNCACT_MILITARY%'
-          OR themes LIKE '%WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE%'
-          OR themes LIKE '%DRONES%'
-          OR themes LIKE '%KILL%'
-        )
+      themes LIKE '%MARITIME%'
+      OR themes LIKE '%ENV_OIL%'
+      OR themes LIKE '%DRONES%'
+      OR themes LIKE '%SEIZE%'
+      OR LOWER(themes) LIKE '%tanker%'
+    )
 ),
 
 dedup AS (
