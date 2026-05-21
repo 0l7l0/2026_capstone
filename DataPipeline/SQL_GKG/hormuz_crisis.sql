@@ -73,7 +73,6 @@ filtered AS (
     AND (
       themes LIKE '%MARITIME%'
       OR themes LIKE '%ENV_OIL%'
-      OR themes LIKE '%DRONES%'
       OR themes LIKE '%SEIZE%'
       OR LOWER(themes) LIKE '%tanker%'
     )
