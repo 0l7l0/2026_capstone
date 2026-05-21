@@ -71,13 +71,7 @@ filtered AS (
           OR LOWER(organizations) LIKE '%hamas%'
           OR LOWER(persons) LIKE '%netanyahu%'
         )
-        AND (
-          themes LIKE '%TAX_FNCACT_MILITARY%'
-          OR themes LIKE '%CRISISLEX_T03_ARMED-CONFLICT%'
-          OR themes LIKE '%WB_635_PEACE_AND_SECURITY%'
-          OR themes LIKE '%KILL%'
-          OR themes LIKE '%SANCTIONS%'
-        )
+        
 ),
 
 dedup AS (
