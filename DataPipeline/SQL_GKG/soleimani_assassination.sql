@@ -74,11 +74,7 @@ filtered AS (
           OR LOWER(locations) LIKE '%iraq%'
         )
         AND (
-          themes LIKE '%KILL%'
-          OR themes LIKE '%DRONES%'
-          OR themes LIKE '%TAX_FNCACT_MILITARY%'
-          OR themes LIKE '%EPU_CATS_NATIONAL_SECURITY%'
-          OR LOWER(themes) LIKE '%assassination%'
+          LOWER(themes) LIKE '%assassination%'
         )
 ),
 
