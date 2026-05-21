@@ -18,8 +18,8 @@ WITH base AS (
   FROM `gdelt-bq.gdeltv2.gkg_partitioned`
   WHERE
 
-    _PARTITIONTIME >= TIMESTAMP('2022-12-17')
-    AND _PARTITIONTIME < TIMESTAMP('2024-01-03') 
+    _PARTITIONTIME >= TIMESTAMP('2022-12-16')
+    AND _PARTITIONTIME <= TIMESTAMP('2024-01-03') 
     
 
     AND TranslationInfo IS NULL
