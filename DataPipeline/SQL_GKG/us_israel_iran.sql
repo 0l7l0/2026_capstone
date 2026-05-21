@@ -75,11 +75,7 @@ filtered AS (
           OR LOWER(persons) LIKE '%biden%'
         )
         AND (
-          themes LIKE '%DRONES%'
-          OR themes LIKE '%MARITIME%'
-          OR themes LIKE '%KILL%'
-          OR themes LIKE '%EPU_CATS_NATIONAL_SECURITY%'
-          OR themes LIKE '%SANCTIONS%'
+          themes LIKE '%MARITIME%'
         )
 ),
 
