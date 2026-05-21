@@ -69,13 +69,6 @@ filtered AS (
           OR LOWER(locations) LIKE '%israel%'
           OR LOWER(organizations) LIKE '%irgc%'
         )
-        AND (
-          themes LIKE '%DRONES%'
-          OR themes LIKE '%KILL%'
-          OR themes LIKE '%SANCTIONS%'
-          OR themes LIKE '%EPU_CATS_NATIONAL_SECURITY%'
-          OR themes LIKE '%TAX_FNCACT_MILITARY%'
-        )
 ),
 
 dedup AS (
