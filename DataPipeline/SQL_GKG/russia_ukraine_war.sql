@@ -70,13 +70,7 @@ filtered AS (
           OR LOWER(locations) LIKE '%donbas%'
           OR LOWER(locations) LIKE '%russia%'
         )
-        AND (
-          themes LIKE '%ARMEDCONFLICT%'
-          OR themes LIKE '%TAX_FNCACT_MILITARY%'
-          OR themes LIKE '%WB_2432_FRAGILITY_CONFLICT_AND_VIOLENCE%'
-          OR themes LIKE '%DRONES%'
-          OR themes LIKE '%KILL%'
-        )
+        
 ),
 
 dedup AS (
