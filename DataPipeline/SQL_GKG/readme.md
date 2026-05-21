@@ -16,17 +16,11 @@
 ---
 ## Objective
 
-- GKG 데이터셋 내 지정학 관련 키워드 검색 수행
-- GDELT theme taxonomy 기반 군사·분쟁 관련 테마 필터링 적용
-- Persons, Organizations, Locations, Themes 필드를 활용한 이벤트별 조건 구성
-- 공통 지정학 테마(Common Geopolitical Themes)를 OR 조건으로 묶어 군사·전쟁·안보 관련 뉴스 우선 추출
-- 이벤트별 인물·조직·지역 키워드를 OR 조건으로 구성하여 특정 지정학 이벤트 관련 기사 식별
-- 이벤트 특수 테마(예: MARITIME, SANCTIONS, DRONES 등)를 OR 조건으로 추가 적용
-- 각 조건 그룹(Common Themes / Event Keywords / Additional Themes)은 AND 조건으로 연결하여 이벤트 관련성 강화
-- 중복 뉴스 제거 수행
-- 이벤트 기간 기준 뉴스 데이터 추출
-- 일별 뉴스 빈도 집계 수행
-- 
+- 지정학 이벤트 기반 뉴스 데이터 수집
+- GDELT GKG 기반 커스텀 지정학 리스크(Custom GPR) 구축
+- 주요 국제 분쟁 이벤트의 시장 영향 분석 지원
+- BTC 변동성과 시장 심리 분석을 위한 이벤트 데이터 생성
+  
 ---
 ## Dataset
 
@@ -80,9 +74,9 @@
 
 | Event | Persons / Organizations / Locations | Additional Themes |
 |---|---|---|
-| Hormuz Crisis | irgc, gevolutionary guard, iran, hormuz, persian gulf | MARITIME, ENV_OIL, SEIZE, tanker |
+| Hormuz Crisis | irgc, revolutionary guard, iran, hormuz, persian gulf | MARITIME, ENV_OIL, SEIZE, tanker |
 | Soleimani Assassination | soleimani, irgc, quds, baghdad, iraq | assassination |
-| Russia-Ukraine War | putin, zelensky, ukraine, kyiv, conbas, russia | - |
+| Russia-Ukraine War | putin, zelensky, ukraine, kyiv, donbas, russia | - |
 | Israel-Hamas War | hamas, netanyahu, israel, gaza, palestine | - |
 | Israel-Iran Conflict | netanyahu, khamenei, iran, israel, irgc | - |
 | US-Israel-Iran Conflict | biden, netanyahu, khamenei, pentagon, irgc, iran, israel | MARITIME |
@@ -90,9 +84,14 @@
 ---
 ## SQL Logic / Filtering Rule
 
-- GKG 데이터셋 내 지정학 관련 키워드 검색
-- GDELT theme taxonomy 기반 군사·분쟁 테마 필터링
-- 중복 뉴스 제거
+- GKG 데이터셋 내 지정학 관련 키워드 검색 수행
+- GDELT theme taxonomy 기반 군사·분쟁 관련 테마 필터링 적용
+- Persons, Organizations, Locations, Themes 필드를 활용한 이벤트별 조건 구성
+- 공통 지정학 테마(Common Geopolitical Themes)를 OR 조건으로 묶어 군사·전쟁·안보 관련 뉴스 우선 추출
+- 이벤트별 인물·조직·지역 키워드를 OR 조건으로 구성하여 특정 지정학 이벤트 관련 기사 식별
+- 이벤트 특수 테마(예: MARITIME, SANCTIONS, DRONES 등)를 OR 조건으로 추가 적용
+- 각 조건 그룹(Common Themes / Event Keywords / Additional Themes)은 AND 조건으로 연결하여 이벤트 관련성 강화
+- ROW_NUMBER() 기반 URL 중복 제거 수행
 - 이벤트 기간 기준 뉴스 데이터 추출
 - 일별 뉴스 빈도 집계 수행
 
