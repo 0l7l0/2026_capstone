@@ -2,10 +2,10 @@
 안에서 디렉토리 라인 정리 예정
 
 ├── SQL_GKG/  
-│   ├── event_hormuz.sql  
-│   ├── event_solaimani.sql  
-│   ├── event_russia_ukraine.sql  
-│   ├── event_israel_hamas.sql  
+│   ├── hormuz.sql  
+│   ├── solaimani.sql  
+│   ├── russia_ukraine.sql  
+│   ├── israel_hamas.sql  
 │   └── README.md   
   
 ├── raw_data/  
