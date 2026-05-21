@@ -18,7 +18,7 @@ WITH base AS (
   FROM `gdelt-bq.gdeltv2.gkg_partitioned`
   WHERE
     _PARTITIONTIME >= TIMESTAMP('2024-01-04')
-    AND _PARTITIONTIME < TIMESTAMP('2025-03-16') 
+    AND _PARTITIONTIME <= TIMESTAMP('2025-03-16') 
     
     AND TranslationInfo IS NULL
     AND DocumentIdentifier IS NOT NULL
