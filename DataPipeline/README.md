@@ -32,9 +32,9 @@
 │    │   ├── gpr_custom_israel_iran.csv   
 │    │   └── gpr_custom_us_israel_iran.csv  
 │    │
-│    ├── final/
-│    │   ├── custom_gpr_daily.csv  
-│    │   ├── gpr_combined.csv  
+│    ├── final/  
+│    │   ├── custom_gpr_daily.csv   
+│    │   ├── gpr_combined.csv   
 │    │   ├── merged_market_data.csv  
 │    │   ├── final_master_data.csv  
 │    │   └── gpr_correlation_summary.csv  
