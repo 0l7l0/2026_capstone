@@ -36,9 +36,7 @@
 │    │   ├── custom_gpr_daily.csv   
 │    │   ├── gpr_combined.csv   
 │    │   ├── merged_market_data.csv  
-│    │   ├── final_master_data.csv  
-│    │   └── gpr_correlation_summary.csv  
-│    │   ├── merged_market_data.csv      
+│    │   ├── gpr_correlation_summary.csv  
 │    │   └── final_master_data.csv   
 │  
 ├── GPR_custom_analysis.ipynb  
