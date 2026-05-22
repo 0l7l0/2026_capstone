@@ -27,7 +27,9 @@
 
 
 ------ ---
-GPR_custom_analysis.ipynb 
+GPR_custom_analysis.ipynb  
+- step중에서, 2번만 png 한국어 -> 영어 변경, 주석, 다운 파일 정리하면 됨. (현재 파일 말고 주피터랩 연동된 파일로 대체 예정)
+
 ## Step 2 - 1. CSV 로드 + 데이터 이해
 
 | 컬럼 | 설명 | 비고 |
