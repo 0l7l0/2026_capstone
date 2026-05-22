@@ -55,7 +55,8 @@ processed_data/final:
 
 ------ ---
 GPR_custom_analysis.ipynb  
-- step중에서, 2번만 png 한국어 -> 영어 변경, 주석, 다운 파일 정리하면 됨. (현재 파일 말고 주피터랩 연동된 파일로 대체 예정) + 그리고 전체 readme 작성
+-  readme 작성 필요 / 올린 ipynb 최종본
+-  master_data.ipynb만 수정 필요
 
 ## Step 2 - 1. CSV 로드 + 데이터 이해
 
