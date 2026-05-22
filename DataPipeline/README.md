@@ -28,7 +28,7 @@
 
 ------ ---
 GPR_custom_analysis.ipynb  
-- step중에서, 2번만 png 한국어 -> 영어 변경, 주석, 다운 파일 정리하면 됨. (현재 파일 말고 주피터랩 연동된 파일로 대체 예정)
+- step중에서, 2번만 png 한국어 -> 영어 변경, 주석, 다운 파일 정리하면 됨. (현재 파일 말고 주피터랩 연동된 파일로 대체 예정) + 그리고 전체 readme 작성
 
 ## Step 2 - 1. CSV 로드 + 데이터 이해
 
@@ -61,3 +61,8 @@ GPR_custom_analysis.ipynb
 | F3 | 보도량×tone 복합 | `−mean(tone) × log(1+N)` | BNP Paribas AM 2022 |
 | F4 | 부정 비율 기반 | `neg/(pos+neg)` | Caldara 원본 정신 |
 | F5 | 28일 지수가중 이동평균 | F2에 기하 가중 MA 적용 | BBVA Monitor |
+
+
+
+-----------
+master_data.ipynb도 코드는 완료 상태(주피터랩), 주석 제거 + readme 작성 필요
