@@ -93,4 +93,21 @@ GPR_custom_analysis.ipynb
 
 
 -----------
-master_data.ipynb도 코드는 완료 상태(주피터랩), 주석 제거 + readme 작성 필요
+master_data.ipynb - readme 작성 필요
+
+---
+## Step 6. 결측치 처리
+
+### 처리 원칙
+
+| 대상 | 원인 | 처리 |
+|---|---|---|
+| BTC·SP500 결측 | 주말·공휴일 (NYSE 비거래일) | **제거** |
+| VIX 결측 | 간헐적 API 누락 | **ffill** |
+| fear_greed 결측 | 간헐적 누락 | **ffill** |
+
+
+master.groupby('event_name')['fear_greed'].shift(1) 코드 수행 후   
+이 작업은 각 이벤트 그룹 내에서 데이터를 한 칸씩 뒤로 밀어 '어제의 값'을 생성
+
+따라서, 이벤트별 총 6개의 결측치 발생
