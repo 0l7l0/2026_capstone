@@ -15,15 +15,44 @@
 │   ├── solaimani_raw.csv  
 │   ├── ukraine_raw.csv  
 │   └── ...  
-  
-├── processed_data/  
-│   ├── custom_gpr_daily.csv  
-│   ├── merged_market_data.csv  
-│   └── final_master_data.csv  
-  
+   
+├── processed_data/    
+│
+│    ├── intermediate/.  
+│    │   ├── gpr_hormuz_soleimani.csv. 
+│    │   ├── gpr_russia_ukraine.csv  
+│    │   ├── gpr_israel_hamas_iran.csv  
+│    │   └── gpr_us_israel_iran.csv   
+│    │
+│    ├── event_level/   
+│    │   ├── gpr_custom_hormuz_crisis.csv  
+│    │   ├── gpr_custom_soleimani_assassination.csv  
+│    │   ├── gpr_custom_russia_ukraine_war.csv  
+│    │   ├── gpr_custom_israel_hamas_war.csv  
+│    │   ├── gpr_custom_israel_iran.csv  
+│    │   └── gpr_custom_us_israel_iran.csv  
+│    │
+│    ├── final/
+│    │   ├── custom_gpr_daily.csv  
+│    │   ├── gpr_combined.csv  
+│    │   ├── merged_market_data.csv  
+│    │   ├── final_master_data.csv  
+│    │   └── gpr_correlation_summary.csv  
+│    │   ├── merged_market_data.csv      
+│    │   └── final_master_data.csv   
+│  
 ├── GPR_custom_analysis.ipynb  
 ├── master_data.ipynb  
 └── README.md  
+
+processed_data/intermediate:
+대용량 이벤트 데이터를 그룹 단위로 분할 처리한 중간 산출물
+
+processed_data/event_level:
+이벤트별 Custom GPR 시계열 데이터
+
+processed_data/final:
+최종 병합 데이터 및 분석 결과 요약
 
 
 ------ ---
