@@ -19,17 +19,17 @@
 ├── processed_data/    
 │
 │    ├── intermediate/.  
-│    │   ├── gpr_hormuz_soleimani.csv. 
-│    │   ├── gpr_russia_ukraine.csv  
-│    │   ├── gpr_israel_hamas_iran.csv  
-│    │   └── gpr_us_israel_iran.csv   
+│    │   ├── gpr_hormuz_soleimani.csv.  
+│    │   ├── gpr_russia_ukraine.csv   
+│    │   ├── gpr_israel_hamas_iran.csv   
+│    │   └── gpr_us_israel_iran.csv    
 │    │
-│    ├── event_level/   
-│    │   ├── gpr_custom_hormuz_crisis.csv  
-│    │   ├── gpr_custom_soleimani_assassination.csv  
-│    │   ├── gpr_custom_russia_ukraine_war.csv  
+│    ├── event_level/    
+│    │   ├── gpr_custom_hormuz_crisis.csv   
+│    │   ├── gpr_custom_soleimani_assassination.csv   
+│    │   ├── gpr_custom_russia_ukraine_war.csv   
 │    │   ├── gpr_custom_israel_hamas_war.csv  
-│    │   ├── gpr_custom_israel_iran.csv  
+│    │   ├── gpr_custom_israel_iran.csv   
 │    │   └── gpr_custom_us_israel_iran.csv  
 │    │
 │    ├── final/
