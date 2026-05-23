@@ -32,7 +32,7 @@ BTC, Gold, SP500, NASDAQ, TLT, DXY 등의 금융시장 데이터를 수집하고
 
 ### 추가 데이터
 
-- Custom GPR (`custom_gpr_daily.csv`)
+- Custom GPR (`gpr_combined.csv`)
 - VIX Index
 - CNN Fear & Greed Index
 
@@ -112,9 +112,7 @@ BTC는 24시간 거래되는 반면 전통 금융시장은 휴장일이 존재�
 | 파일명 | 설명 |
 |---|---|
 | `market_returns.csv` | 금융시장 일별 로그수익률 데이터 |
-| `merged_market_data.csv` | 시장 데이터 + Custom GPR 병합 데이터 |
-| `final_master_data.csv` | 최종 통합 master dataset |
-| `returns.csv` | 이벤트 분석용 수익률 데이터 |
+| `master_data.csv` | 최종 통합 master dataset |
 
 ### 주요 활용 분석
 
