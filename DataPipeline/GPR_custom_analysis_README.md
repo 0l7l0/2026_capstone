@@ -163,7 +163,9 @@
 | `gpr_correlation_summary.csv` | 공식 GPR 상관관계 요약 | 
 | `01_*.png` ~ `07_*.png` | 분석 시각화 결과 |
 
-### 주요 시각화 결과
+### 주요 시각화 결과  
+
+관련 시각화 결과는 `FIGURES/` 디렉토리에 저장하였다.
 
 - Raw Article Distribution
 - Preprocessed Tone Distribution
