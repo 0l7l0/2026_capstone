@@ -50,24 +50,31 @@
 
 ## 4. 주요 변수 설명 (Features)
 
+### Custom GPR 지수 (F1~F5)
+
+| 변수 | 수식 | 설명 |
+|---|---|---|
+| `F1_raw` | $-\overline{\text{tone}}$ | 단순 일평균 tone 역전 |
+| `F2_raw` | $-\dfrac{\sum(\text{tone}_i \times \text{polarity}_i)}{\sum \text{polarity}_i}$ | polarity 가중 tone 가중평균 |
+| `F3_raw` | $-\overline{\text{tone}} \times \log\!\left(1 + \dfrac{N}{\overline{N}}\right)$ | 보도량 log 스케일 × tone 복합 |
+| `F4_raw` | $\dfrac{\overline{\text{neg}}}{\overline{\text{pos}} + \overline{\text{neg}}}$ | 부정 비율 기반 |
+| `F5_raw` | $\text{EWMA}_{28}(F2,\ r=0.1)$ | F2 기반 28일 지수가중이동평균 |
+| `GPR_zscore` | — | 공식 Caldara & Iacoviello GPR Z-score |
+
+### 최종 생성 변수 (Z-score 표준화)
+
 | 변수 | 설명 |
 |---|---|
-| `F1_raw` | 단순 평균 tone 기반 GPR |
-| `F2_raw` | polarity 가중 tone 기반 GPR |
-| `F3_raw` | 보도량 × tone 복합 GPR |
-| `F4_raw` | 부정 비율 기반 GPR |
-| `F5_raw` | F2 기반 28일 EWMA GPR |
-| `GPR_zscore` | 공식 GPR Z-score |
+| `F1_z` | F1_raw Z-score 표준화 |
+| `F2_z` | F2_raw Z-score 표준화 |
+| `F3_z` | F3_raw Z-score 표준화 |
+| `F4_z` | F4_raw Z-score 표준화 |
+| `F5_z` | F5_raw Z-score 표준화 |
 
-### 최종 생성 변수
-
-- `F1_z`
-- `F2_z`
-- `F3_z`
-- `F4_z`
-- `F5_z`
-
-(Z-score 표준화 적용)
+> **하이퍼파라미터**
+> - 이상값 제거 기준: `|tone_score| > 20`
+> - 최소 일별 기사 수: `MIN_DAILY_COUNT = 5`
+> - EWMA 윈도우: `WND = 28`일, 감쇠율: `r = 0.1`
 
 ---
 
@@ -75,9 +82,16 @@
 
 ### Step 1. 데이터 로드 및 이벤트 분리
 
-- 이벤트별 원시 CSV 로드
-- 날짜 형식 통일
-- 이벤트 단위 데이터 구성
+이벤트를 아래 4개 그룹으로 나눠 순차 처리한 후 전체 통합한다.
+
+| 그룹 | 이벤트 | 중간 저장 파일 |
+|---|---|---|
+| (1) | hormuz_crisis, soleimani_assassination | `gpr_hormuz_soleimani.csv` |
+| (2) | russia_ukraine_war | `gpr_russia_ukraine.csv` |
+| (3) | israel_hamas_war, israel_iran, us_israel_iran | `gpr_israel_hamas_iran.csv` |
+| (4) | 전체 통합 | `custom_gpr_daily.csv` |
+
+- GCS(Google Cloud Storage) 기반 원시 CSV 로드 (`gcsfs`)
 
 ### Step 2. 데이터 전처리
 
@@ -92,13 +106,17 @@
 
 다음 5가지 대체 GPR 공식을 구축하였다.
 
-| 공식 | 설명 |
-|---|---|
-| F1 | 단순 일평균 tone 역전 |
-| F2 | polarity 가중 tone |
-| F3 | 보도량 × tone 복합 |
-| F4 | 부정 비율 기반 |
-| F5 | 28일 EWMA 기반 |
+| 공식 | 수식 | 설계 의도 |
+|---|---|---|
+| F1 | $-\overline{\text{tone}}$ | 뉴스 부정도의 단순 측정 |
+| F2 | $-\sum(\text{tone} \times \text{polarity}) / \sum\text{polarity}$ | 감정 강도로 가중한 tone |
+| F3 | $-\overline{\text{tone}} \times \log(1 + N/\overline{N})$ | 보도 집중도 반영 복합 지수 (공식 GPR 구조 모방) |
+| F4 | $\overline{\text{neg}} / (\overline{\text{pos}} + \overline{\text{neg}})$ | 순수 부정 비율 측정 |
+| F5 | $\text{EWMA}_{28}(F2,\ r=0.1)$ | F2의 단기 노이즈 평활화 |
+
+**Z-score 표준화**
+
+각 공식별로 이벤트 내 전체 기간 기준 Z-score 변환 적용
 
 ### Step 4. 공식 GPR 상관관계 분석
 
@@ -126,11 +144,23 @@
 
 ## 7. 결과 파일 (Output)
 
-| 파일명 | 설명 |
+### 중간 저장 파일 (그룹별)
+
+| 파일명 | 포함 이벤트 | 
 |---|---|
-| `custom_gpr_daily.csv` | 전체 이벤트 통합 Custom GPR 데이터 |
-| `gpr_combined.csv` | 이벤트별 통합 GPR 결과 |
-| `gpr_correlation_summary.csv` | 공식 GPR 상관관계 요약 |
+| `gpr_hormuz_soleimani.csv` | hormuz_crisis, soleimani_assassination | 
+| `gpr_russia_ukraine.csv` | russia_ukraine_war | 
+| `gpr_israel_hamas_iran.csv` | israel_hamas_war, israel_iran | 
+| `gpr_us_israel_iran.csv` | us_israel_iran | 
+
+### 최종 산출 파일
+
+| 파일명 | 설명 | 
+|---|---|
+| `custom_gpr_daily.csv` | 위 4개 그룹 통합 전체 이벤트 Custom GPR | 
+| `gpr_custom_{event}.csv` | 이벤트별 개별 Custom GPR (6개 파일) | 
+| `gpr_combined.csv` | 전체 이벤트 통합 GPR 결과 | 
+| `gpr_correlation_summary.csv` | 공식 GPR 상관관계 요약 | 
 | `01_*.png` ~ `07_*.png` | 분석 시각화 결과 |
 
 ### 주요 시각화 결과
