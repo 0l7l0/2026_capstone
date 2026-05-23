@@ -54,12 +54,13 @@
 
 | 변수 | 수식 | 설명 |
 |---|---|---|
-| `F1_raw` | $-\overline{\text{tone}}$ | 단순 일평균 tone 역전 |
-| `F2_raw` | $-\dfrac{\sum(\text{tone}_i \times \text{polarity}_i)}{\sum \text{polarity}_i}$ | polarity 가중 tone 가중평균 |
-| `F3_raw` | $-\overline{\text{tone}} \times \log\!\left(1 + \dfrac{N}{\overline{N}}\right)$ | 보도량 log 스케일 × tone 복합 |
-| `F4_raw` | $\dfrac{\overline{\text{neg}}}{\overline{\text{pos}} + \overline{\text{neg}}}$ | 부정 비율 기반 |
-| `F5_raw` | $\text{EWMA}_{28}(F2,\ r=0.1)$ | F2 기반 28일 지수가중이동평균 |
+| `F1_raw` | $-\overline{\text{tone}}$ | GDELT GKG tone의 일평균을 역방향으로 변환한 단순 감성 지표 |
+| `F2_raw` | $-\dfrac{\sum(\text{tone}_i \times \text{polarity}_i)}{\sum \text{polarity}_i}$ | polarity를 감성 밀도 가중치로 사용한 톤 가중평균 |
+| `F3_raw` | $-\overline{\text{tone}} \times \log\!\left(1 + \dfrac{N}{\overline{N}}\right)$ | 평균 tone에 상대 보도량 충격을 결합한 복합 지표 |
+| `F4_raw` | $\dfrac{\overline{\text{neg}}}{\overline{\text{pos}} + \overline{\text{neg}}}$ | 부정 비중이 차지하는 비율 |
+| `F5_raw` | $\text{EWMA}_{28}(F2,\ r=0.1)$ | F2의 단기 변동을 완화한 28일 지수가중 이동평균 |
 | `GPR_zscore` | — | 공식 Caldara & Iacoviello GPR Z-score |
+
 
 ### 최종 생성 변수 (Z-score 표준화)
 
@@ -179,8 +180,10 @@
 
 ## 8. 참고문헌 (References)
 
-1. Caldara, D., & Iacoviello, M. (2022). *Measuring Geopolitical Risk*. American Economic Review.
-2. BBVA Research (2025). *Geopolitical Risk Monitoring Framework*.
-3. BNP Paribas Asset Management (2022). *Geopolitical Risk and Market Dynamics*.
-4. GDELT Project Documentation — https://www.gdeltproject.org/
-5. Yahoo Finance API (`yfinance`)
+1. Caldara, D., & Iacoviello, M. (2022). Measuring Geopolitical Risk. American Economic Review, 112(4), 1194–1225.
+2. Leetaru, K., & Schrodt, P. A. (2013). GDELT: Global Data on Events, Location and Tone, 1979–2012. ISA Annual Convention, April 2013.
+3. Tetlock, P. C. (2007). Giving Content to Investor Sentiment: The Role of Media in the Stock Market. Journal of Finance, 62(3), 1139–1168.
+4. Baker, S. R., Bloom, N., & Davis, S. J. (2016). Measuring Economic Policy Uncertainty. Quarterly Journal of Economics, 131(4), 1593–1636.
+5. Loughran, T., & McDonald, B. (2011). When Is a Liability Not a Liability? Textual Analysis, Dictionaries, and 10-Ks. Journal of Finance, 66(1), 35–65.
+6. GDELT Project Documentation. GDELT Global Knowledge Graph (GKG) Codebook and Documentation. https://www.gdeltproject.org/
+7. Yahoo Finance API via yfinance. Python package documentation. https://pypi.org/project/yfinance/
