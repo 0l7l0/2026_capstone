@@ -103,7 +103,19 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 
 ---
 
-## 5. 재현 방법 (How to Run)
+## 5. 대시보드 이미지
+
+<!-- 대시보드 스크린샷 추가 예정 -->
+
+---
+
+## 6. 팀원 역할
+
+<!-- 팀원 이름 및 담당 파트 추가 예정 -->
+
+---
+
+## 7. 재현 방법 (How to Run)
 
 ### 환경 설정
 
@@ -134,7 +146,7 @@ pip install pandas numpy scipy statsmodels quantreg arch numdifftools \
 
 ---
 
-## 6. 참고문헌
+## 8. 참고문헌
 
 **안전자산 판정 기준**
 - Baur, D. G., & Lucey, B. M. (2010). Is Gold a Hedge or a Safe Haven? *Financial Review*, 45(2), 217–229.
