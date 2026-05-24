@@ -106,7 +106,62 @@ ln h(t) = ω + β·ln h(t-1) + α·(|z(t-1)| − E|z|) + γ_asym·z(t-1) + δ·X
 
 ---
 
-## 7. 주요 결과 (Key Findings)
+## 7. 이론적 근거 (Theoretical Background)
+
+각 방법론적 선택이 어떤 논문을 근거로 하는지 정리합니다.
+
+### GARCH-X 모형 선택 근거
+
+| 선택 | 논문 | 근거 요약 |
+|------|------|-----------|
+| ARCH 채택 | Engle (1982) | 기존 일정분산 가정을 기각 — 과거 정보가 미래 변동성 예측에 유용하다는 조건부 이분산성 실증 |
+| GARCH(1,1) 확장 | Bollerslev (1986) | h(t-1) 항 추가로 ARCH보다 간결·유연한 변동성 구조 제공, α+β<1 약정상성 조건 제시 |
+| 외생변수 포함 (GARCH-X) | Han & Kristensen (2014) | 외생변수가 분산식에서 유의함을 점근적 이론으로 수립, 추가 설명력 정당화 |
+
+### 외생변수 선택 근거
+
+| 변수 | 논문 | 근거 요약 |
+|------|------|-----------|
+| GPR | Caldara & Iacoviello (2022) | 지정학적 리스크 공식 지수 원전 — 대리변수로서 이론적 정당성 확보 |
+| Fear & Greed | Bourghelle et al. (2022) | F&G와 BTC 변동성 간 유의한 양방향 lead-lag 관계, 극단 공포 → 패닉 매도 → 과도한 변동성 유발 확인 |
+| VIX | Su et al. (2022) | VIX는 시장 불확실성 척도로 알려짐, VIX↑ → 투자자 위험심리 반영 |
+
+### Student-t 오차항 사용 근거
+
+| 선택 | 논문 | 근거 요약 |
+|------|------|-----------|
+| Student-t MLE | Liu et al. (2017) | BTC 수익률 fat-tail 분포 확인, Student-t GARCH가 정규 GARCH 대비 AIC·BIC 기준 우수 |
+
+### α+β ≈ 1 해석 (near-IGARCH)
+
+| 선택 | 논문 | 근거 요약 |
+|------|------|-----------|
+| α+β < 1 정상성 조건 | Bollerslev (1986) | α+β → 1 시 정상성 경계, 충격이 장기 지속되는 구조 |
+| near-IGARCH 설명 | Bergsli et al. (2022) | α+β ≈ 1 → 무조건분산 미존재, 고지속성(long-memory) 변동성 구조 |
+
+### MLE 추정 구현 근거
+
+| 선택 | 논문 | 근거 요약 |
+|------|------|-----------|
+| Hessian 기반 SE | Calzolari et al. (1993) | GARCH 추정 후 공분산행렬 산출 시 Hessian 역행렬 사용의 표준 근거 |
+| 제약 파라미터 변환 | Doornik & Ooms (2003) | 제약 공간 → unconstrained 공간 변환(지수/로짓), Jacobian 연결 |
+| Delta method | Anastasiou & Ley (2017) | 변환된 추정량의 점근정규성 수립, Jacobian으로 원 파라미터 SE 복원 |
+| 다중 초기값 | Mahmood & Khan (2020) | GARCH 우도함수의 다봉성 — 국소최적해 회피를 위한 다중 초기값 격자 탐색 필요 |
+
+### 강건성 검증 근거
+
+| 방법 | 논문 | 근거 요약 |
+|------|------|-----------|
+| 이벤트 더미 | Spyrou & Kassimatis (1999) | 분산식에 0/1 더미 포함 → 특정 기간 구조적 변화 통제, 결론 안정성 확인 |
+| EGARCH | Nelson (1991) | 충격 부호별 비대칭 반응(레버리지 효과) 포착 — GARCH 결론의 강건성 교차 검증 |
+
+### AIC/BIC 기반 모형 선택 근거
+
+AIC·BIC는 로그우도를 높이려는 경향을 복잡도 벌점으로 보정하는 모형선택 기준입니다. 파라미터 수가 많아도 적합도 개선이 충분히 클 때만 복잡한 모형을 지지하며, 두 기준이 일치하는 모형을 최적으로 채택합니다.
+
+---
+
+## 8. 주요 결과 (Key Findings)
 
 **GARCH-X 모델 비교** (AIC 오름차순)
 
@@ -148,7 +203,7 @@ ln h(t) = ω + β·ln h(t-1) + α·(|z(t-1)| − E|z|) + γ_asym·z(t-1) + δ·X
 
 ---
 
-## 8. 결과 파일 (Output)
+## 9. 결과 파일 (Output)
 
 | 파일 | 유형 | 내용 |
 |------|------|------|
@@ -171,10 +226,29 @@ ln h(t) = ω + β·ln h(t-1) + α·(|z(t-1)| − E|z|) + γ_asym·z(t-1) + δ·X
 
 ---
 
-## 9. 참고문헌 (References)
+## 10. 참고문헌 (References)
 
-- Caldara, D., & Iacoviello, M. (2022). Measuring Geopolitical Risk. *American Economic Review*, 112(4), 1194–1225.
+**모형 근거**
+- Engle, R. F. (1982). Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation. *Econometrica*, 50(4), 987–1007.
 - Bollerslev, T. (1986). Generalized Autoregressive Conditional Heteroskedasticity. *Journal of Econometrics*, 31(3), 307–327.
 - Nelson, D. B. (1991). Conditional Heteroskedasticity in Asset Returns: A New Approach. *Econometrica*, 59(2), 347–370.
-- Engle, R. F. (1982). Autoregressive Conditional Heteroscedasticity with Estimates of the Variance of United Kingdom Inflation. *Econometrica*, 50(4), 987–1007.
+- Han, H., & Kristensen, D. (2014). Asymptotic Theory for the Quasi-Maximum Likelihood Estimator for GARCH Models with Covariates. *Journal of Business & Economic Statistics*, 32(3), 416–429.
+
+**외생변수 선택**
+- Caldara, D., & Iacoviello, M. (2022). Measuring Geopolitical Risk. *American Economic Review*, 112(4), 1194–1225.
+- Bourghelle, D., Jawadi, F., & Rozin, P. (2022). Do collective emotions drive bitcoin volatility? *Finance Research Letters*, 45, 102041.
+- Su, C.-W., Qin, M., Tao, R., & Umar, M. (2022). Can Bitcoin Be a Safe Haven in Fear Sentiment? *Technological Forecasting and Social Change*, 174, 121186.
+
+**분포 및 파라미터 추정**
+- Liu, Y., Tsyvinski, A., & Wu, X. (2017). GARCH Model With Fat-Tailed Distributions and Bitcoin Exchange Rate Returns. *Journal of Accounting, Business and Management*, 25(1).
+- Calzolari, G., Fiorentini, G., & Panattoni, L. (1993). Alternative Estimators of the Covariance Matrix in GARCH Models. *Econometrics Working Paper*.
+- Doornik, J. A., & Ooms, M. (2003). Multimodality in the GARCH Regression Model. *Working Paper*.
+- Anastasiou, D., & Ley, C. (2017). Bounds for the Asymptotic Normality of the Maximum Likelihood Estimator Using the Delta Method. *ESAIM: Probability and Statistics*, 21, 332–350.
+- Mahmood, I., & Khan, M. I. (2020). Multi-modality in the Likelihood Function of GARCH Model. *Working Paper*.
+
+**강건성 검증**
+- Bergsli, L. Ø., Lind, A. F., Molnár, P., & Polasik, M. (2022). Forecasting Volatility of Bitcoin. *Research in International Business and Finance*, 59, 101540.
+- Spyrou, S. I., & Kassimatis, K. (1999). Did Equity Market Volatility Increase Following the Opening of Stock Markets to Foreign Investors? *Journal of Economic Development*, 24(1).
+
+**수치 계산**
 - Numdifftools Python library — Richardson extrapolation for numerical Hessian
