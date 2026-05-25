@@ -1,4 +1,4 @@
-# Raw Data
+# Raw Data - 원시 데이터
 
 원본 지정학 이벤트 데이터는 Google Cloud Storage(GCS)에 저장되어 있으며,  
 GitHub에는 예시용 샘플 데이터만 포함하였다.
