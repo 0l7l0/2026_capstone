@@ -1,4 +1,4 @@
-# Processed Data
+# Processed Data - 가공 데이터
 
 전처리 및 분석 과정에서 생성된 데이터셋 저장 폴더이다.  
 
