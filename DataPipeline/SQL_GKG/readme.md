@@ -1,4 +1,6 @@
-# Overview - Event Selection Criteria
+# SQL_GKG - 지정학 이벤트 데이터 추출
+
+## 1. 파일 개요 (Overview)
 
 본 프로젝트에서는 공식 GPR(Geopolitical Risk) 지수의 평균 대비 급등 구간을 기준으로 주요 지정학 이벤트를 선정하였다.
 
@@ -14,7 +16,7 @@
 각 이벤트는 GDELT GKG 데이터셋에서 SQL 기반 키워드 필터링을 통해 추출하였다.  
 
 ---
-## Objective
+## 2. 분석 목적 (Objective)
 
 - 지정학 이벤트 기반 뉴스 데이터 수집
 - GDELT GKG 기반 커스텀 지정학 리스크(Custom GPR) 구축
@@ -22,7 +24,7 @@
 - BTC 변동성과 시장 심리 분석을 위한 이벤트 데이터 생성
   
 ---
-## Dataset
+## 3. 사용 데이터 (Dataset)
 
 | 데이터셋 | 설명 |
 |---|---|
@@ -31,7 +33,7 @@
 | Source Type | 뉴스 기사 및 이벤트 메타데이터 |
 
 ---
-## Data Collection Scope
+## 4. 데이터 수집 범위 (Data Collection Scope)
 
 본 프로젝트는 GDELT GKG(Global Knowledge Graph) 데이터셋을 기반으로
 2019-01-01 ~ 2026-04-30 기간의 글로벌 뉴스 데이터를 수집하였다.
@@ -39,7 +41,7 @@
 각 지정학 이벤트는 이벤트 발생일(event date)을 기준으로
 이전 이벤트와 이후 이벤트 구간이 겹치지 않도록 분할하여 수집하였다.
 
-### Event Windows
+### 5. 이벤트 윈도우 (Event Windows)
 
 | Event | Event Date | Collection Period |
 |---|---|---|
@@ -51,12 +53,12 @@
 | US-Israel-Iran Conflict | 2026-02-28 | 2025-03-17 ~ 2026-04-30 |
 
 ---
-## Keywords
+## 6. 키워드 (Keywords)
 
 각 이벤트별 지정학 관련 인물(Persons), 조직(Organizations),
 지역(Locations), 테마(Themes) 키워드를 기반으로 SQL 필터링을 수행하였다.
 
-### Common Geopolitical Themes
+### 공통 지정학 테마 (Common Geopolitical Themes)
 
 | Common Themes |
 |---|
@@ -70,7 +72,7 @@
 | KILL |
 | DRONES |
 
-###  Event-specific Keywords
+###  이벤트별 핵심 키워드 (Event-specific Keywords)
 
 | Event | Persons / Organizations / Locations | Additional Themes |
 |---|---|---|
@@ -82,7 +84,7 @@
 | US-Israel-Iran Conflict | biden, netanyahu, khamenei, pentagon, irgc, iran, israel | MARITIME |
 
 ---
-## SQL Logic / Filtering Rule
+## 7. SQL 로직 및 필터링 기준 (SQL Logic / Filtering Rule)
 
 - GKG 데이터셋 내 지정학 관련 키워드 검색 수행
 - GDELT theme taxonomy 기반 군사·분쟁 관련 테마 필터링 적용
@@ -97,7 +99,7 @@
 
 ----
 
-## Output
+## 8. 결과 파일 (Output)
 
 | 파일명 | 설명 |
 |---|---|
@@ -109,7 +111,7 @@
 | us_israel_iran_raw.csv | 미국-이스라엘-이란 갈등 뉴스 데이터 |
 
 ---
-## Related Analysis
+## 9. 연관 분석 (Related Analysis)
 
 본 SQL 기반 데이터 추출 결과는 다음 분석 과정에 활용된다.
 
@@ -120,7 +122,7 @@
 - Dashboard/
 
 ---
-## References
+## 10. 참고문헌 (References)
 
 ### GDELT / GKG References
 - GDELT Global Knowledge Graph (GKG) Codebook
