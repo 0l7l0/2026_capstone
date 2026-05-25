@@ -415,9 +415,9 @@ def render_garch() -> None:
 def render_raw_data() -> None:
     st.header("원 데이터")
     st.subheader("master_data")
-    master = load_csv("datapipeline/master_data/master_data.csv")
+    master = load_csv("DataPipeline/processed_data/final/master_data.csv")
     if master is None:
-        st.error("master_data.csv 없음 — datapipeline/master_data/master_data.csv 경로 확인")
+        st.error("master_data.csv 없음 — DataPipeline/processed_data/final/master_data.csv 경로 확인")
         return
 
     master["date"] = pd.to_datetime(master["date"])
