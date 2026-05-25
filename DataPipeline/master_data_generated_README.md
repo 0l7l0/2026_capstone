@@ -120,3 +120,7 @@ BTC는 24시간 거래되는 반면 전통 금융시장은 휴장일이 존재�
 - Quantile Regression
 - GARCH Volatility Analysis
 - Dashboard Visualization
+
+  ---
+  
+## 8. 참고문헌 (References)
