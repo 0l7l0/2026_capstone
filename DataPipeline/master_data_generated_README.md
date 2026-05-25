@@ -3,7 +3,7 @@
 
 ## 1. 파일 개요 (Overview)
 
-`master_data_generated.ipynb`는 Custom GPR 데이터와 금융시장 수익률 데이터를 병합하여 최종 분석용 master dataset을 생성하는 노트북이다.
+`master_data_generated.ipynb`는 Custom GPR 데이터와 금융시장 수익률 데이터를 병합하여 BTC 안전자산 분석을 위한 통합 master dataset 생성하는 노트북이다.
 
 BTC, Gold, SP500, NASDAQ, TLT, DXY 등의 금융시장 데이터를 수집하고, Custom GPR·VIX·Fear & Greed Index와 결합하여 Event Study, Quantile Regression, GARCH 분석에 사용되는 통합 데이터셋을 구축하였다.
 
@@ -11,13 +11,13 @@ BTC, Gold, SP500, NASDAQ, TLT, DXY 등의 금융시장 데이터를 수집하고
 
 ## 2. 분석 목적 (Objective)
 
-본 분석의 목적은 지정학 리스크(Custom GPR)와 금융시장 수익률 데이터를 통합하여 BTC의 안전자산(safe-haven asset) 여부를 실증 분석하기 위한 최종 분석 데이터셋을 생성하는 데 있다.
+본 분석의 목적은 지정학 리스크(Custom GPR)와 금융시장 수익률 데이터를 통합하여 BTC의 안전자산 여부를 실증 분석하기 위한 분석 데이터셋을 생성하는 데 있다.
 
 특히 이벤트 기간별 금융시장 반응과 BTC 수익률 변화를 비교할 수 있도록 이벤트 기반 master dataset을 구축하였다.
 
 ---
 
-## 3. 사용 데이터 (Dataset)
+## 3. 입력 데이터 (Dataset)
 
 ### 금융시장 데이터
 
@@ -100,7 +100,7 @@ BTC는 24시간 거래되는 반면 전통 금융시장은 휴장일이 존재�
 
 ## 6. 주요 결과 (Key Findings)
 
-- 지정학 이벤트 기간 동안 BTC는 Gold와 상이한 수익률 반응을 보이는 경우가 확인되었다.
+- 지정학 이벤트 기간 동안 자산별 수익률 반응 차이를 분석할 수 있는 데이터셋을 구축하였다.
 - F3 기반 Custom GPR이 금융시장 변동성과 가장 높은 연관성을 보였다.
 - VIX 상승 구간에서 BTC 변동성이 확대되는 경향이 관찰되었다.
 - 생성된 master dataset은 이후 Event Study, Quantile Regression, GARCH 분석의 핵심 입력 데이터로 활용되었다.
@@ -124,3 +124,8 @@ BTC는 24시간 거래되는 반면 전통 금융시장은 휴장일이 존재�
   ---
   
 ## 8. 참고문헌 (References)
+
+1. Yahoo Finance API via yfinance. Python package documentation. https://pypi.org/project/yfinance/
+2. Caldara, D., & Iacoviello, M. (2022). Measuring Geopolitical Risk. American Economic Review, 112(4), 1194–1225.
+3. CNN Business. Fear & Greed Index. https://edition.cnn.com/markets/fear-and-greed
+4. Chicago Board Options Exchange (CBOE). CBOE Volatility Index (VIX). https://www.cboe.com/tradable_products/vix/
