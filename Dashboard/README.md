@@ -1,28 +1,6 @@
-# Additional Required Assets for Research-Oriented Dashboard
-
-## 1. 현재 충분한 자료
-
-현재 이미 확보된 Figure 및 CSV는 다음 분석을 커버하기에 충분하다.
-
-### Risk Index
-
-| 자료 | 상태 |
-|---|---|
-| Figure 03_correlation_heatmap | ⭕ |
-| Figure 04_scatter_matrix | ⭕ |
-| Figure 05_gpr_timeseries | ⭕ |
-| Figure 06_official_vs_ours | ⭕ |
-| Figure 07_event_window | ⭕ |
-
-즉:
-
-```text
-Custom GPR 생성 및 검증 파트
-```
-
-는 이미 충분한 상태이다.
-
----
+수정된 dashboard_uui.py의 변경 필요 부분 
+실제 뉴스데이터 총 개수 구하는거랑 figure 1,2번 이미지는 각 전쟁별로 만드는거로 수정 다시 돌리기. 그리고 7번 png도 이상하게 f2랑 f5랑 돌아간거라서 다시 f3버전으로 만들기  
+현재 main 통합 부분이랑 datapipeline은 위에 대체분 제외 완성 -> 팀원 피드백 필요
 
 ## 2. 현재 가장 부족한 영역
 
