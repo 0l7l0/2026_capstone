@@ -76,6 +76,9 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 | `Quantile/` | 위기 분위수별 β 추정 | HAC Newey-West SE, LOO 강건성, 블록 부트스트랩 |
 | `GARCH/` | BTC 조건부 변동성 분석 | GARCH-X / EGARCH Student-t MLE, scipy 직접 구현 |
 | `Dashboard/` | 결과 통합 시각화 | Streamlit + Plotly |
+| `Validation/` | 독립 검증 | catalog v1.6, 33개 학술 표준 항목 |
+
+> 독립 검증 (`validation/`): catalog v1.6 기준 33개 학술 표준 항목 PASS 32/1/0
 
 ---
 
