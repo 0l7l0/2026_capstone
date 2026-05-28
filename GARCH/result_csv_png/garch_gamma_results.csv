@@ -1,0 +1,11 @@
+﻿model,model_label,variable,gamma,p_value,significance,interpretation
+Model1,공식 GPR 단독,GPR_zscore_scaled,-0.01057,0.8867,— 비유의,비유의
+Model2,커스텀 GPR 단독,GPR_custom_scaled,0.03186,0.7092,— 비유의,비유의
+Model3,VIX + Fear&Greed,VIX_scaled,0.00611,0.9527,— 비유의,비유의
+Model3,VIX + Fear&Greed,fear_greed_lag1_scaled,0.1625,0.0467,✅ p<0.05,변동성 증가 (위험자산)
+Model4,공식 GPR + 시장심리,GPR_zscore_scaled,0.02594,0.7051,— 비유의,비유의
+Model4,공식 GPR + 시장심리,VIX_scaled,-0.00086,0.9932,— 비유의,비유의
+Model4,공식 GPR + 시장심리,fear_greed_lag1_scaled,0.16872,0.0438,✅ p<0.05,변동성 증가 (위험자산)
+Model5,커스텀 GPR + 시장심리,GPR_custom_scaled,0.03994,0.6066,— 비유의,비유의
+Model5,커스텀 GPR + 시장심리,VIX_scaled,-0.00075,0.9943,— 비유의,비유의
+Model5,커스텀 GPR + 시장심리,fear_greed_lag1_scaled,0.16464,0.0444,✅ p<0.05,변동성 증가 (위험자산)
