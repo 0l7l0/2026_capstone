@@ -245,11 +245,11 @@ AIC와 BIC는 로그우도(Log-Likelihood)를 기반으로 하되, 모형 복잡
 
 | 모델     | 설명               |      AIC |      BIC |    α+β |
 | ------ | ---------------- | -------: | -------: | -----: |
-| Model3 | VIX + Fear&Greed | 9578.710 | 9617.260 | 0.9961 |
-| Model4 | 공식 GPR + 시장심리    | 9580.390 | 9624.447 | 0.9975 |
-| Model5 | 커스텀 GPR + 시장심리   | 9580.417 | 9624.474 | 0.9960 |
-| Model2 | 커스텀 GPR 단독       | 9582.402 | 9615.445 | 0.9937 |
-| Model1 | 공식 GPR 단독        | 9582.517 | 9615.560 | 0.9937 |
+| Model3 | VIX + Fear&Greed | 9469.786 | 9508.231 | 0.9946 |
+| Model4 | 공식 GPR + 시장심리    | 9471.506 | 9515.444 | 0.9944 |
+| Model5 | 커스텀 GPR + 시장심리   | 9471.637 | 9515.575 | 0.9958 |
+| Model2 | 커스텀 GPR 단독       | 9472.586 | 9505.540 | 0.9930 |
+| Model1 | 공식 GPR 단독        | 9472.71 | 9505.664 | 0.9930 |
 
 해석:
 
@@ -263,14 +263,14 @@ AIC와 BIC는 로그우도(Log-Likelihood)를 기반으로 하되, 모형 복잡
 
 | 모델     | 변수              |       γ | p-value |
 | ------ | --------------- | ------: | ------: |
-| Model1 | GPR_zscore      | -0.0045 |   0.960 |
-| Model2 | GPR_custom      |  0.0263 |   0.735 |
-| Model3 | VIX             | -0.0231 |   0.801 |
-| Model3 | fear_greed_lag1 |  0.1573 |   0.038 |
-| Model4 | GPR_zscore      |  0.0440 |   0.583 |
-| Model4 | fear_greed_lag1 |  0.1667 |   0.032 |
-| Model5 | GPR_custom      |  0.0364 |   0.596 |
-| Model5 | fear_greed_lag1 |  0.1615 |   0.034 |
+| Model1 | GPR_zscore      | -0.01057 |   0.8867 |
+| Model2 | GPR_custom      | 0.03186 |   0.7092 |
+| Model3 | VIX             | 0.00611 |   0.9527 |
+| Model3 | fear_greed_lag1 |  0.1625 |   0.0467 |
+| Model4 | GPR_zscore      |  0.02594 |   0.7051 |
+| Model4 | fear_greed_lag1 |  0.16872 |   0.0438 |
+| Model5 | GPR_custom      |  0.03994 |   0.6066 |
+| Model5 | fear_greed_lag1 |  0.16464 |   0.0444 |
 
 핵심 해석:
 
@@ -336,17 +336,18 @@ Fear & Greed 변수는 EGARCH 구조에서도 반복적으로 유의.
 
 ### 핵심 결론
 
-* BTC는 지정학 리스크보다 시장심리 변수에 더 민감
-* `GPR_custom`은 GARCH·EGARCH 모두에서 비유의
-* `Fear & Greed`는 반복적으로 유의
-* 최적 모델은 `Model3 (VIX + Fear&Greed)`
-* α+β ≈ 0.996 → near-IGARCH 구조
-* BTC 변동성 충격 지속성이 매우 강함
+* BTC 변동성은 지정학 리스크보다 시장심리(Fear & Greed)의 영향을 더 크게 받음
+* GPR 및 Custom GPR 변수는 모든 GARCH 모형에서 유의하지 않음
+* Fear & Greed는 반복적으로 유의한 설명변수로 확인됨
+* GARCH 기준 최적 모델은 Model3(VIX + Fear & Greed)
+* α+β≈0.995로 변동성 충격의 지속성이 매우 높음
+* BTC 변동성은 지정학 이벤트 자체보다 투자심리 변화에 더 민감하게 반응함
 
 ### 종합 판단
 
-> BTC는 본 연구에서 Safe Haven보다는
-> 시장심리에 민감한 Risk Asset 특성을 더 강하게 보였다.
+> BTC는 지정학 충격에 의해 직접적으로 변동성이 확대되기보다는,
+> 시장 참여자의 위험선호와 투자심리에 의해 변동성이 결정되는 경향이 강하게 나타났다.
+> 따라서 본 연구에서는 Safe Haven보다는 시장심리에 민감한 Risk Asset 특성이 더 우세한 것으로 판단된다.
 
 ---
 
