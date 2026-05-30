@@ -78,8 +78,6 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 | `Dashboard/` | 결과 통합 시각화 | Streamlit + Plotly |
 | `Validation/` | 독립 검증 | catalog v1.6, 33개 학술 표준 항목 |
 
-> 독립 검증 (`validation/`): catalog v1.6 기준 33개 학술 표준 항목 PASS 32/1/0
-
 ---
 
 ## 4. 최종 결론
