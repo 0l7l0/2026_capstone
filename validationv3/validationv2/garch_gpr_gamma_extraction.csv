@@ -1,5 +1,0 @@
-﻿model,model_label,variable,gamma,p_value,significant_at_0.05
-Model1,공식 GPR 단독,GPR_zscore_scaled,-0.004497,0.960242,False
-Model2,커스텀 GPR 단독,GPR_custom_scaled,0.026274,0.734625,False
-Model4,공식 GPR + 시장심리,GPR_zscore_scaled,0.044042,0.583285,False
-Model5,커스텀 GPR + 시장심리,GPR_custom_scaled,0.036367,0.596204,False
