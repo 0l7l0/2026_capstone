@@ -1,291 +1,113 @@
-수정된 dashboard_ui.py의 변경 필요 부분 
-1) eda장에서 글자수 겹치는 부분 수정 필요(png). 
-2) 이벤트스터디에서 강건성.csv 호르무즈 값 누락. 
-3) 분위수 회귀 파트는 코드 돌려보면서 png 다시 다운로드 받고, 추가로 시각화 개선 필요해서, 분위수 코드 재작업 후에 수정 예정. 
-4) 내일 위 작성된 파트 수정 후 GARCH까지 마무리 예정 / 원 데이터 탐색란에서 삭제. 
-5) 시각화 개선만 한거라서 작성된 내용들 팩트 파악 필요. 
- 
-## 2. 현재 가장 부족한 영역
+# ₿ BTC Safe Haven Dashboard
 
-현재 부족한 영역은 대부분:
+## 1. 프로젝트 개요 (Overview)
 
-```text
-금융시장 반응 시각화
+본 대시보드는 비트코인(BTC)이 지정학적 위기 상황에서 안전자산(Safe Haven) 역할을 수행하는지 검증하기 위해 구축되었다.
+
+연구는 2019~2026년 주요 지정학 이벤트를 대상으로 수행되었으며, Event Study(C1), Quantile Regression(C2), GARCH(C3)의 세 가지 분석 방법을 통합하여 BTC의 안전자산 특성을 평가한다.
+
+대시보드는 각 분석 결과와 최종 판정을 시각적으로 제공하며, 연구 전체 흐름을 한 화면에서 확인할 수 있도록 설계되었다.
+
+---
+
+## 2. Dashboard 구성
+
+대시보드는 총 6개의 탭으로 구성된다.
+
+| 탭                        | 내용                     |
+| ------------------------ | ---------------------- |
+| 통합 판정                    | Safe Haven 종합 결과       |
+| GPR 파이프라인                | Custom GPR 구축 과정       |
+| EDA                      | 기초 통계 및 상관관계 분석        |
+| Event Study (C1)         | 이벤트 발생 시 초과수익률(CAR) 검정 |
+| Quantile Regression (C2) | 극단 하락 구간 Safe Haven 검정 |
+| GARCH-X / EGARCH (C3)    | 지정학 리스크의 변동성 영향 검정     |
+
+---
+
+## 3. Safe Haven 평가 체계
+
+본 연구는 Baur & Lucey (2010)의 안전자산 개념을 참고하여 세 가지 조건을 이벤트별로 평가한다.
+
+| 조건 | 설명                                  |
+| -- | ----------------------------------- |
+| C1 | Event Study 기반 CAR 방향성 검정           |
+| C2 | Quantile Regression 기반 하방 위험 동조화 검정 |
+| C3 | GARCH 기반 변동성 영향 검정                  |
+
+각 조건 결과를 종합하여 이벤트별 Safe Haven 특성을 평가한다.
+
+---
+
+## 4. 주요 결과 (Key Findings)
+
+### Event Study (C1)
+
+* BTC는 6개 이벤트 중 4개에서 양(+) CAR를 기록하였다.
+* 그러나 BH-FDR 다중검정 보정 후 모든 이벤트가 비유의로 나타났다.
+* 전쟁 충격 시 일관된 초과수익 증거는 확인되지 않았다.
+
+### Quantile Regression (C2)
+
+* 하방 극단 구간(τ ≤ 0.10)에서 BTC와 SP500의 동조화가 강화되었다.
+* 6개 이벤트 중 5개 이벤트에서 Safe Haven 조건을 충족하지 못하였다.
+* 시장 급락 시 BTC의 분산 기능은 제한적인 것으로 나타났다.
+
+### GARCH-X / EGARCH (C3)
+
+* GPR 계수(γ)는 GARCH·EGARCH 전 모델에서 비유의로 나타났다.
+* Fear & Greed 지수는 반복적으로 유의하였다.
+* BTC 변동성은 지정학 리스크보다 시장심리에 더 민감한 것으로 나타났다.
+
+---
+
+## 5. 최종 통합 판정
+
+이벤트별 통합 평가 결과는 다음과 같다.
+
+| 이벤트          | 최종 판정       |
+| ------------ | ----------- |
+| 호르무즈 위기      | Safe Haven* |
+| 솔레이마니 암살     | Weak Haven  |
+| 러-우 전쟁       | Weak Haven  |
+| 이스라엘-하마스 전쟁  | Diversifier |
+| 이스라엘-이란 충돌   | Diversifier |
+| 미-이스라엘-이란 충돌 | Weak Haven  |
+
+### 종합 결론
+
+* BTC는 일부 이벤트에서 Safe Haven 방향성을 보였으나 일관된 안전자산으로 확인되지는 않았다.
+* Event Study에서는 강한 초과수익 증거가 확인되지 않았다.
+* Quantile Regression에서는 대부분의 이벤트에서 주식시장과의 동조화가 관찰되었다.
+* GARCH 분석에서는 지정학 리스크보다 시장심리 변수의 설명력이 더 높게 나타났다.
+* 따라서 BTC는 전통적 의미의 Safe Haven보다는 조건부·제한적 Weak Haven에 가까운 특성을 보이는 것으로 해석된다.
+
+---
+
+## 6. 실행 방법 (Run Dashboard)
+
+### Local
+
+```bash
+streamlit run Dashboard/app.py
 ```
 
-이다.
+### Streamlit Cloud
 
-특히:
-
-- Safe-Haven 여부
-- BTC vs Gold 비교
-- 시장 반응 흐름
-- 변동성 비교
-
-를 직관적으로 보여주는 Figure가 부족하다.
+GitHub Repository를 Streamlit Cloud에 연결하여 배포할 수 있다.
 
 ---
 
-# 3. 추가 생성 추천 자료 (High Priority)
-
-## 3-1. BTC vs Gold Cumulative Return
-
-### 목적
-
-Main Hero Visualization
-
-### 필요 이유
-
-현재 대시보드는:
-
-- Heatmap
-- Scatter
-- Correlation
-
-중심이므로,
+## 7. Repository Structure
 
 ```text
-“BTC가 실제로 Gold처럼 움직였는가?”
+Dashboard/
+DataPipeline/
+EDA/
+EventStudy/
+FIGURES/
+GARCH/
+Quantile/
+screenshots/
+validation/
 ```
-
-를 직관적으로 보여주는 대표 Figure가 부족하다.
-
----
-
-### 추천 파일명
-
-```text
-FIGURES/main_btc_gold_compare.png
-```
-
----
-
-### 추천 구성
-
-- BTC cumulative return
-- Gold cumulative return
-- Event vertical line
-- Event annotation
-
----
-
-## 3-2. CAR Comparison Figure
-
-### 목적
-
-Event Study 결과 시각화
-
-### 현재 문제
-
-현재 Event Study는:
-
-```text
-table 중심
-```
-
-이라 대시보드 느낌이 약하다.
-
----
-
-### 추천 파일명
-
-```text
-event_study/result_csv_png/car_comparison.png
-```
-
----
-
-### 추천 구성
-
-- Event별 CAR
-- BTC vs Gold vs SP500 비교
-- Barplot 형태
-
----
-
-## 3-3. Rolling Correlation
-
-### 목적
-
-BTC-SP500 동조화 시각화
-
-### 추천 파일명
-
-```text
-eda/result_csv_png/rolling_corr.png
-```
-
----
-
-### 추천 구성
-
-- BTC-SP500 rolling correlation
-- BTC-Gold rolling correlation
-- 이벤트 vertical line
-
----
-
-## 3-4. Event Price Flow
-
-### 목적
-
-이벤트 전후 시장 흐름 설명
-
-### 추천 파일명
-
-```text
-eda/result_csv_png/event_price_flow.png
-```
-
----
-
-### 추천 구성
-
-- Event window cumulative return
-- BTC / Gold / SP500 비교
-
----
-
-## 3-5. Tail Dependence Heatmap
-
-### 목적
-
-Quantile Regression 결과 시각화
-
-### 추천 파일명
-
-```text
-quantile/result_csv_png/quantreg_heatmap.png
-```
-
----
-
-### 추천 구성
-
-- 분위수별 β 값 heatmap
-- 자산별 비교
-
----
-
-## 3-6. Gamma Coefficient Comparison
-
-### 목적
-
-GARCH-X 외생변수 영향 비교
-
-### 추천 파일명
-
-```text
-garch/result_csv_png/garch_gamma_coefficients.png
-```
-
----
-
-### 추천 구성
-
-- GPR
-- VIX
-- Fear & Greed
-
-γ coefficient barplot
-
----
-
-# 4. 추가 추천 CSV
-
-## 4-1. Model Comparison Summary
-
-### 목적
-
-교수님 선호형 Research Dashboard 강화
-
----
-
-### 추천 파일명
-
-```text
-garch/result_csv_png/model_comparison_summary.csv
-```
-
----
-
-### 추천 컬럼
-
-| Model | AIC | BIC | LogLik | Significant Variables |
-|---|---|---|---|---|
-
----
-
-## 4-2. Safe Haven Verdict Summary
-
-### 목적
-
-최종 결과 요약 카드
-
----
-
-### 추천 파일명
-
-```text
-safe_haven_summary.csv
-```
-
----
-
-### 추천 컬럼
-
-| Event | BTC Verdict | Gold Verdict | Significant |
-|---|---|---|---|
-
----
-
-# 5. 현재 기준 우선순위
-
-## 반드시 추천
-
-```text
-1. main_btc_gold_compare.png
-2. car_comparison.png
-3. rolling_corr.png
-```
-
----
-
-## 있으면 좋은 수준
-
-```text
-4. quantreg_heatmap.png
-5. garch_gamma_coefficients.png
-6. model_comparison_summary.csv
-```
-
----
-
-# 6. 현재 구조 기준 최종 판단
-
-현재 프로젝트는:
-
-```text
-GPR 생성 및 검증
-```
-
-쪽은 이미 충분히 강하다.
-
-반면 부족한 건:
-
-```text
-금융시장 반응을 직관적으로 보여주는 대표 Figure
-```
-
-이다.
-
-따라서:
-
-```text
-BTC vs Gold
-BTC vs SP500
-Event Window Return
-```
-
-등 금융시장 반응 중심 Figure를 보강하는 것이  
-현재 단계에서 가장 효과적인 개선 방향이다.
