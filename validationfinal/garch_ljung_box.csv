@@ -1,0 +1,7 @@
+﻿series,lag,LB_stat,p_value,reject_H0_at_0.05,mu_used,source
+standardized_residual,5,4.9596,0.4208,False,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)
+standardized_residual,10,8.6566,0.565,False,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)
+standardized_residual,20,18.6076,0.5474,False,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)
+squared_standardized_residual,5,15.3917,0.0088,True,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)
+squared_standardized_residual,10,16.9634,0.0752,False,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)
+squared_standardized_residual,20,20.6593,0.4174,False,0.0885,본진 GARCH/result_csv_png/ (Model3 mu)

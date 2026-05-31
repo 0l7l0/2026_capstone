@@ -1,0 +1,5 @@
+﻿model,model_label,variable,gamma,p_value,significant_at_0.05,source
+Model1,공식 GPR 단독,GPR_zscore_scaled,-0.010574,0.886686,False,GARCH/result_csv_png/garch_model_params.csv (본진 1800행)
+Model2,커스텀 GPR 단독,GPR_custom_scaled,0.031858,0.709202,False,GARCH/result_csv_png/garch_model_params.csv (본진 1800행)
+Model4,공식 GPR + 시장심리,GPR_zscore_scaled,0.025943,0.705136,False,GARCH/result_csv_png/garch_model_params.csv (본진 1800행)
+Model5,커스텀 GPR + 시장심리,GPR_custom_scaled,0.039945,0.606638,False,GARCH/result_csv_png/garch_model_params.csv (본진 1800행)
