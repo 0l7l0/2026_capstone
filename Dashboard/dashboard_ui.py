@@ -430,7 +430,7 @@ def tab_eda() -> None:
     st.caption("통계 모형 도입의 정당성 확보 — Fat-tail·변동성 군집 확인")
 
     # ── 기초 수치 ──
-    returns = load_csv("eda/result_csv_png/returns.csv")
+    returns = load_csv("EDA/result_csv_png/returns.csv")
     if returns is not None and "BTC" in returns.columns:
         c1, c2, c3 = st.columns(3)
         c1.metric("BTC 평균 수익률", f"{returns['BTC'].mean():.4f}")
@@ -444,7 +444,7 @@ def tab_eda() -> None:
     with t1:
         section("수익률 분포 & 변동폭", "#7C3AED")
  
-        img_dist = load_img("eda/result_csv_png/plot4_returns_dist.png")
+        img_dist = load_img("EDA/result_csv_png/plot4_returns_dist.png")
         if img_dist:
             _, c_mid, _ = st.columns([0.5, 9, 0.5])
             with c_mid:
@@ -455,7 +455,7 @@ def tab_eda() -> None:
         st.divider()
  
         with st.expander("📊 BTC 일별 High-Low 변동폭", expanded=True):
-            img_hl = load_img("eda/result_csv_png/plot5_btc_highlow.png")
+            img_hl = load_img("EDA/result_csv_png/plot5_btc_highlow.png")
             if img_hl:
                 _, c_mid2, _ = st.columns([1, 8, 1])
                 with c_mid2:
@@ -468,7 +468,7 @@ def tab_eda() -> None:
     with t2:
         section("전쟁 전후 상관관계 구조 변화", "#7C3AED")
  
-        img_corr = load_img("eda/result_csv_png/plot6_corr_heatmap.png")
+        img_corr = load_img("EDA/result_csv_png/plot6_corr_heatmap.png")
         if img_corr:
             _, c_mid, _ = st.columns([0.5, 9, 0.5])
             with c_mid:
@@ -479,7 +479,7 @@ def tab_eda() -> None:
         st.divider()
  
         with st.expander("📊 BTC 30일 롤링 상관관계", expanded=True):
-            img_roll = load_img("eda/result_csv_png/plot8_rolling_corr.png")
+            img_roll = load_img("EDA/result_csv_png/plot8_rolling_corr.png")
             if img_roll:
                 _, c_mid2, _ = st.columns([1, 8, 1])
                 with c_mid2:
@@ -671,14 +671,14 @@ def tab_quantile() -> None:
     with t1:
         col1, col2 = st.columns(2)
         with col1:
-            img = load_img("quantile/result_csv_png/quantreg_beta_path.png")
+            img = load_img("Quantile/result_csv_png/quantreg_beta_path.png")
             if img:
                 st.image(img, caption="기본 모델 분위수 β 경로", use_container_width=True)
         with col2:
-            img = load_img("quantile/result_csv_png/quantreg_beta_path_ia.png")
+            img = load_img("Quantile/result_csv_png/quantreg_beta_path_ia.png")
             if img:
                 st.image(img, caption="상호작용항 포함 β 경로", use_container_width=True)
-        beta_csv = load_csv("quantile/result_csv_png/quantreg_beta_path.csv")
+        beta_csv = load_csv("Quantile/result_csv_png/quantreg_beta_path.csv")
         if beta_csv is not None and "tau" in beta_csv.columns and "beta" in beta_csv.columns:
             fig = px.line(beta_csv, x="tau", y="beta",
                           labels={"tau": "분위수 τ", "beta": "β (SP500 계수)"},
@@ -691,20 +691,20 @@ def tab_quantile() -> None:
     with t2:
         col1, col2 = st.columns(2)
         with col1:
-            img = load_img("quantile/result_csv_png/quantreg_heatmap.png")
+            img = load_img("Quantile/result_csv_png/quantreg_heatmap.png")
             if img:
                 st.image(img, caption="기본 모형 판정 히트맵", use_container_width=True)
         with col2:
-            img = load_img("quantile/result_csv_png/quantreg_heatmap_ia.png")
+            img = load_img("Quantile/result_csv_png/quantreg_heatmap_ia.png")
             if img:
                 st.image(img, caption="상호작용항 포함 판정 히트맵", use_container_width=True)
 
     with t3:
         t3a, t3b, t3c = st.tabs(["GPR 변수 제외", "Leave-One-Out", "Min-Max 변환"])
         csvs = [
-            ("quantile/result_csv_png/robust_iv.csv",  t3a),
-            ("quantile/result_csv_png/robust_loo.csv", t3b),
-            ("quantile/result_csv_png/robust_mm.csv",  t3c),
+            ("Quantile/result_csv_png/robust_iv.csv",  t3a),
+            ("Quantile/result_csv_png/robust_loo.csv", t3b),
+            ("Quantile/result_csv_png/robust_mm.csv",  t3c),
         ]
         for path, tab in csvs:
             with tab:
@@ -728,9 +728,9 @@ def tab_garch() -> None:
     section("GARCH-X & EGARCH — C3 변동성 전이 검증", "#16A34A")
     st.caption("조건부 분산식에 Custom GPR + VIX + Fear&Greed 결합 · AIC/BIC 모델 선정")
 
-    comp = pd.read_csv(ROOT / "Garch/result_csv_png/garch_model_comparison.csv")
-    persist = pd.read_csv(ROOT / "Garch/result_csv_png/garch_persistence.csv")
-    gamma = pd.read_csv(ROOT / "Garch/result_csv_png/garch_gamma_results.csv")
+    comp = pd.read_csv(ROOT / "GARCH/result_csv_png/garch_model_comparison.csv")
+    persist = pd.read_csv(ROOT / "GARCH/result_csv_png/garch_persistence.csv")
+    gamma = pd.read_csv(ROOT / "GARCH/result_csv_png/garch_gamma_results.csv")
 
     best_row = comp.loc[comp["AIC"].idxmin()]
     best_model = best_row["모델"]
@@ -771,12 +771,12 @@ def tab_garch() -> None:
 
     with t1:
 
-        img = load_img("garch/result_csv_png/garch_conditional_vol.png")
+        img = load_img("GARCH/result_csv_png/garch_conditional_vol.png")
         if img:
             _, c_mid, _ = st.columns([2, 6, 2])
             with c_mid:
                 st.image(img, caption="BTC 조건부 변동성 σ(t) 추정 경로", use_container_width=True)
-        event_vol = load_csv("garch/result_csv_png/garch_event_volatility.csv")
+        event_vol = load_csv("GARCH/result_csv_png/garch_event_volatility.csv")
         if event_vol is not None:
             fig = px.bar(
                 event_vol, x="event", y="max_volatility",
@@ -790,16 +790,16 @@ def tab_garch() -> None:
     with t2:
         col1, col2 = st.columns([1.5, 1])
         with col1:
-            img = load_img("garch/result_csv_png/garch_model_comparison.png")
+            img = load_img("GARCH/result_csv_png/garch_model_comparison.png")
             if img:
                 st.image(img, caption="AIC/BIC 기준 모델 비교", use_container_width=True)
         with col2:
-            ranking = load_csv("garch/result_csv_png/garch_model_ranking.csv")
+            ranking = load_csv("GARCH/result_csv_png/garch_model_ranking.csv")
             if ranking is not None:
                 top3 = ranking.head(3)
                 for rank, (_, row) in enumerate(top3.iterrows(), 1):
                     st.metric(f"{rank}위 모델", row["model"])
-            persist = load_csv("garch/result_csv_png/garch_persistence.csv")
+            persist = load_csv("GARCH/result_csv_png/garch_persistence.csv")
             if persist is not None:
                 fig = px.bar(persist, x="model", y="alpha_plus_beta",
                              color="alpha_plus_beta",
@@ -815,11 +815,11 @@ def tab_garch() -> None:
     with t3:
         col1, col2 = st.columns(2)
         with col1:
-            img = load_img("garch/result_csv_png/garch_gamma_coefficients.png")
+            img = load_img("GARCH/result_csv_png/garch_gamma_coefficients.png")
             if img:
                 st.image(img, caption="외생 변수 γ 계수 신뢰구간", use_container_width=True)
         with col2:
-            gamma = load_csv("garch/result_csv_png/garch_gamma_long.csv")
+            gamma = load_csv("GARCH/result_csv_png/garch_gamma_long.csv")
             if gamma is not None and "coef" in gamma.columns:
                 fig = px.scatter(
                     gamma, x="coef", y="var", color="model",
