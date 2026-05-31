@@ -140,9 +140,8 @@
 | 파일                                             | 내용                             |
 | ---------------------------------------------- | ------------------------------ |
 | `result_csv_png/event_study_results.csv`       | 이벤트별·자산별 CAR·t-stat·p-value·판정 |
-| `result_csv_png/event_study_car_bh.csv`        | BH 다중검정 보정 적용 결과               |
 | `result_csv_png/event_study_AR_timeseries.csv` | 일별 AR·SAR·CAR·CSAR 시계열         |
-| `result_csv_png/event_study_placebo.csv`       | 플라시보 검정 결과 (200회)              |
+
 
 ### PNG 파일
 
