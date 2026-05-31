@@ -33,7 +33,9 @@ ASSET_COLORS = {
 }
 VERDICT_COLOR = {
     "Safe Haven": "#2E7D32",
+    "Safe Haven*": "#558B2F",
     "Weak Haven": "#F9A825",
+    "Diversifier": "#1976D2",
     "Risky Asset": "#C62828",
 }
 
