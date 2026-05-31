@@ -113,29 +113,44 @@
 **플라시보 검정** (200회 무작위 창 시뮬레이션)
 
 | 이벤트 | 실제 BTC CAR | 플라시보 평균 | 백분위 | p-value |
-|--------|-------------|--------------|--------|---------|
-| Soleimani | +0.404 | +0.012 | 93% | 0.14 |
-| Israel-Hamas | +0.405 | -0.018 | 94% | 0.13 |
-| US-Israel-Iran | +0.168 | +0.013 | 70% | 0.61 |
+|----------|----------:|----------:|----------:|----------:|
+| Hormuz Crisis | +0.365 | +0.014 | 86.0% | 0.28 |
+| Soleimani Assassination | +0.404 | -0.022 | 95.0% | 0.10 |
+| Russia–Ukraine War | +0.132 | +0.000 | 63.5% | 0.73 |
+| Israel–Hamas War | +0.405 | -0.019 | 95.5% | 0.09 |
+| Israel–Iran | -0.219 | -0.004 | 20.5% | 0.41 |
+| US–Israel–Iran | +0.168 | -0.040 | 72.5% | 0.55 |
+
 
 > **핵심 결론**
-> - **BTC**: 5개 이벤트 중 4개에서 양(+)의 CAR이지만 전 이벤트 통계적 비유의 — BTC의 높은 고유 변동성이 유의성 확보를 방해 (BTC에게 +20% 수익은 일상일 수 있음)
-> - **Gold**: Israel-Iran 이벤트에서 유일하게 Safe Haven 판정(p=0.040)이나, BH 보정 후 비유의
-> - **BTC 안전자산 성격은 이벤트별 비일관적** → GARCH·분위 회귀 등 추가 분석 필요
-> - 이벤트 창 ±17일로 반환 효과(mean reversion)가 CAR을 희석했을 가능성 존재
+>
+> * **BTC**: 6개 이벤트 중 4개에서 양(+) CAR를 기록하였으나, BH-FDR 보정 후 모든 이벤트가 비유의(pBH=0.849)로 나타남
+> * **Gold**: Israel-Iran 이벤트에서 유일하게 Safe Haven 판정(p=0.040)을 받았으나, BH 보정 후 비유의(pBH=0.849)로 전환
+> * **BH 다중검정 보정 후**: 30개 검정 전체 비유의 (Gold Israel-Iran: pBH = 0.849)
+> * **플라시보 검정(200회 무작위 창 시뮬레이션)**에서도 모든 이벤트가 유의수준 5%를 충족하지 못함
+> * 따라서 이벤트 스터디(C1)만으로 BTC를 Strong Safe Haven으로 분류할 통계적 근거는 확인되지 않음
+> * 이후 분위수 회귀(C2)와 GARCH(C3)를 통해 극단 하락 구간 동조화 및 변동성 반응을 추가 검증
 
----
+ ---
 
 ## 7. 결과 파일 (Output)
 
-| 파일 | 유형 | 내용 |
-|------|------|------|
-| `result_csv_png/event_study_results.csv` | CSV | 이벤트별·자산별 CAR·t-stat·p-value·판정 |
-| `result_csv_png/event_study_car_bh.csv` | CSV | BH 다중검정 보정 적용 결과 |
-| `result_csv_png/event_study_AR_timeseries.csv` | CSV | 일별 AR·SAR·CAR·CSAR 시계열 |
-| `result_csv_png/event_study_placebo.csv` | CSV | 플라시보 검정 결과 (200회) |
-| `result_csv_png/event_study_CAR_timeseries.png` | PNG | 이벤트별·자산별 CAR 시계열 |
-| `result_csv_png/event_study_CAR_bar_final.png` | PNG | 이벤트별 CAR 막대그래프 (유의성 표시) |
+### CSV 파일
+
+| 파일                                             | 내용                             |
+| ---------------------------------------------- | ------------------------------ |
+| `result_csv_png/event_study_results.csv`       | 이벤트별·자산별 CAR·t-stat·p-value·판정 |
+| `result_csv_png/event_study_car_bh.csv`        | BH 다중검정 보정 적용 결과               |
+| `result_csv_png/event_study_AR_timeseries.csv` | 일별 AR·SAR·CAR·CSAR 시계열         |
+| `result_csv_png/event_study_placebo.csv`       | 플라시보 검정 결과 (200회)              |
+
+### PNG 파일
+
+| 파일                                              | 내용                      |
+| ----------------------------------------------- | ----------------------- |
+| `result_csv_png/event_study_CAR_timeseries.png` | 이벤트별·자산별 CAR 시계열        |
+| `result_csv_png/event_study_CAR_bar_final.png`  | 이벤트별 CAR 막대그래프 (유의성 표시) |
+
 
 ---
 
