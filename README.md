@@ -106,7 +106,14 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 
 ## 5. 대시보드 이미지
 
-<!-- 대시보드 스크린샷 추가 예정 -->
+| 탭 | 스크린샷 |
+|---|---|
+| 통합 판정 | ![통합 판정](screenshots/screenshot_01_overview.png) |
+| GPR 파이프라인 | ![GPR 파이프라인](screenshots/screenshot_02_gpr.png) |
+| EDA | ![EDA](screenshots/screenshot_03_eda.png) |
+| 이벤트 스터디 | ![이벤트 스터디](screenshots/screenshot_04_event_study.png) |
+| 분위수 회귀 | ![분위수 회귀](screenshots/screenshot_05_quantile.png) |
+| GARCH | ![GARCH](screenshots/screenshot_06_garch.png) |
 
 ---
 
