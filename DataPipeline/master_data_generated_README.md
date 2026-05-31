@@ -13,7 +13,8 @@ BTC, Gold, SP500, NASDAQ, TLT, DXY 등의 금융시장 데이터를 수집하고
 
 본 분석의 목적은 지정학 리스크(Custom GPR)와 금융시장 수익률 데이터를 통합하여 BTC의 안전자산 여부를 실증 분석하기 위한 분석 데이터셋을 생성하는 데 있다.
 
-특히 이벤트 기간별 금융시장 반응과 BTC 수익률 변화를 비교할 수 있도록 이벤트 기반 master dataset을 구축하였다.
+Custom GPR, 금융시장 수익률, VIX, Fear & Greed Index를 통합하여
+Event Study, Quantile Regression, GARCH 분석에 공통으로 활용되는 master dataset을 구축한다.
 
 ---
 
@@ -100,11 +101,11 @@ BTC는 24시간 거래되는 반면 전통 금융시장은 휴장일이 존재�
 
 ## 6. 주요 결과 (Key Findings)
 
-- 지정학 이벤트 기간 동안 자산별 수익률 반응 차이를 분석할 수 있는 데이터셋을 구축하였다.
-- F3 기반 Custom GPR이 금융시장 변동성과 가장 높은 연관성을 보였다.
-- VIX 상승 구간에서 BTC 변동성이 확대되는 경향이 관찰되었다.
-- 생성된 master dataset은 이후 Event Study, Quantile Regression, GARCH 분석의 핵심 입력 데이터로 활용되었다.
-
+- 금융시장 수익률, Custom GPR, VIX, Fear & Greed Index를 통합한 master_data을 구축하였다.
+- BTC의 24시간 거래 특성을 반영하기 위해 비거래일 수익률 누적 보정을 수행하였다.
+- 지정학 이벤트 메타데이터를 연결하여 이벤트 기반 분석이 가능하도록 구성하였다.
+- 생성된 master_data은 Event Study, Quantile Regression, GARCH 분석의 공통 입력 데이터로 활용되었다.
+  
 ---
 
 ## 7. 결과 파일 (Output)
