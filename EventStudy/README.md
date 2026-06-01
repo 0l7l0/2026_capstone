@@ -86,8 +86,8 @@
 | 조건 | 분류 |
 |------|------|
 | CAR > 0 & p < 0.05 | **Safe Haven** ✅ |
-| CAR > 0 & p ≥ 0.05 | **Diversifier** |
-| CAR < 0 & p < 0.05 | **Risky Asset** ❌ |
+| CAR > 0 & p ≥ 0.05 | **Safe Haven** ✅ |
+| CAR < 0 & p < 0.05 | **Diversifier** ❌ |
 | CAR < 0 & p ≥ 0.05 | 비유의 |
 
 ---
