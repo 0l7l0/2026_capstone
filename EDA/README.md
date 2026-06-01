@@ -2,7 +2,7 @@
 
 ## 1. 파일 개요 (Overview)
 
-`EDA_final.ipynb`는 지정학적 위기 시 비트코인(BTC)의 안전자산 특성을 검증하기 위한 통합 탐색적 데이터 분석 노트북입니다.  
+`EDA_final.ipynb`는 지정학적 위기 및 거시경제 충격 시 비트코인(BTC)의 안전자산 특성을 검증하기 위한 통합 탐색적 데이터 분석 노트북입니다.  
 총 8단계(Step 0–8)로 구성되며, 6개 자산의 가격 추이·수익률 분포·통계 검정·상관관계 변화를 분석하고 이후 분석(이벤트 스터디, 분위 회귀, GARCH)을 위한 기초 근거를 마련합니다.
 
 ---
@@ -98,15 +98,16 @@
 | ADF | 단위근이 있다 | 전원 기각 | 정상 시계열 → 시계열 분석 가능 |
 | ARCH | ARCH 효과 없다 | 전원 기각 | 변동성 군집 존재 → GARCH 사용 정당화 |
 
-**이란 전쟁(2026) 전후 BTC 상관관계 변화**
+### 이란 전쟁(2026) 전후 BTC 상관관계 변화
 
-| 비교 쌍 | 전쟁 전 | 전쟁 중 | 변화 | 해석 |
-|---------|--------|--------|------|------|
-| BTC–SP500 | 0.365 | 0.572 | +0.206 | ❌ 위험자산 신호 |
-| BTC–NASDAQ | 0.388 | 0.552 | +0.164 | ❌ 위험자산 신호 |
-| BTC–Gold | -0.130 | -0.129 | +0.001 | → 변화 미미 |
-| BTC–TLT | 0.106 | 0.297 | +0.191 | ✅ 안전자산 신호 |
-| BTC–DXY | -0.024 | -0.065 | -0.041 | → 변화 미미 |
+| 비교 쌍       |   전쟁 전 |   전쟁 중 |     변화 | 관찰 결과          |
+| ---------- | -----: | -----: | -----: | -------------- |
+| BTC–SP500  |  0.365 |  0.572 | +0.206 | 주식시장과의 동행성 증가  |
+| BTC–NASDAQ |  0.388 |  0.552 | +0.164 | 기술주와의 동행성 증가   |
+| BTC–Gold   | -0.130 | -0.129 | +0.001 | 변화 미미          |
+| BTC–TLT    |  0.106 |  0.297 | +0.191 | 미국 국채와의 동행성 증가 |
+| BTC–DXY    | -0.024 | -0.065 | -0.041 | 변화 미미          |
+
 
 **이벤트별 BTC 평균 수익률 변화**
 
@@ -118,25 +119,41 @@
 | Israel-Hamas War | -0.015 | +0.762 | ↑ 상승 |
 | Iran War | -0.244 | +0.460 | ↑ 상승 |
 
-> **EDA 종합**: BTC는 SP500·NASDAQ과 상관관계가 강화(위험자산 행태)되는 반면, TLT와의 상관관계도 동시에 증가하는 혼재된 신호를 보임. 러-우 전쟁을 제외한 4개 이벤트에서 BTC 이벤트 후 수익률이 상승했으나, 금과의 상관관계 변화는 미미하여 고전적 안전자산 정의에는 부합하지 않음.
+> **EDA 종합**
+>
+> BTC는 이란 전쟁 기간 동안 SP500·NASDAQ과의 상관관계가 상승하였으며, 동시에 미국 장기국채(TLT)와의 상관관계도 증가하는 혼재된 신호를 보였다.
+>
+> 또한 러-우 전쟁을 제외한 4개 이벤트에서 BTC 가격이 이벤트 이후 상승하는 모습을 보였으나, Gold 및 DXY와의 상관관계 변화는 제한적으로 나타났다.
+>
+> 다만 전쟁 중 표본 수가 제한적이며 EDA는 탐색적 분석 단계에 해당하므로, 본 결과만으로 BTC의 안전자산 여부를 판단하기는 어렵다.
+>
+> 따라서 이후 Event Study(C1), Quantile Regression(C2), GARCH(C3)를 통해 BTC의 Safe Haven 가설을 추가 검증한다.
 
 ---
 
 ## 7. 결과 파일 (Output)
 
-| 파일 | 유형 | 내용 |
-|------|------|------|
-| `result_csv_png/prices.csv` | CSV | 6개 자산 일별 종가 |
-| `result_csv_png/returns.csv` | CSV | 로그 수익률 |
-| `result_csv_png/normalized.csv` | CSV | 시작일=100 정규화 가격 |
-| `result_csv_png/plot1_price_trend.png` | PNG | 전체 기간 자산별 가격 추이 |
-| `result_csv_png/plot2_event_price.png` | PNG | 이벤트별 정규화 가격 비교 (5개) |
-| `result_csv_png/plot3_moving_average.png` | PNG | 자산별 MA20·MA60 이동평균선 |
-| `result_csv_png/plot4_returns_dist.png` | PNG | 수익률 분포 + 변동성 군집 |
-| `result_csv_png/plot5_btc_highlow.png` | PNG | BTC 이벤트별 일별 변동폭 (High-Low) |
-| `result_csv_png/plot6_corr_heatmap.png` | PNG | 전쟁 전·중·전체 상관관계 히트맵 |
-| `result_csv_png/plot7_event_heatmap.png` | PNG | 이벤트별 ±60일 상관관계 히트맵 |
-| `result_csv_png/plot8_rolling_corr.png` | PNG | BTC 30일 롤링 상관관계 |
+### CSV 파일
+
+| 파일                              | 내용                |
+| ------------------------------- | ----------------- |
+| `result_csv_png/prices.csv`     | 6개 자산 일별 종가       |
+| `result_csv_png/returns.csv`    | 로그 수익률            |
+| `result_csv_png/normalized.csv` | 시작일=100 기준 정규화 가격 |
+
+### PNG 파일
+
+| 파일                                        | 내용                        |
+| ----------------------------------------- | ------------------------- |
+| `result_csv_png/plot1_price_trend.png`    | 전체 기간 자산별 가격 추이           |
+| `result_csv_png/plot2_event_price.png`    | 이벤트별 정규화 가격 비교 (5개 이벤트)   |
+| `result_csv_png/plot3_moving_average.png` | 자산별 MA20·MA60 이동평균선       |
+| `result_csv_png/plot4_returns_dist.png`   | 수익률 분포 및 변동성 군집           |
+| `result_csv_png/plot5_btc_highlow.png`    | BTC 이벤트별 일별 변동폭(High-Low) |
+| `result_csv_png/plot6_corr_heatmap.png`   | 전체·전쟁 전·전쟁 중 상관관계 히트맵     |
+| `result_csv_png/plot7_event_heatmap.png`  | 이벤트별 ±60일 상관관계 히트맵        |
+| `result_csv_png/plot8_rolling_corr.png`   | BTC 30일 롤링 상관관계           |
+
 
 ---
 

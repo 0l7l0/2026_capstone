@@ -33,7 +33,9 @@ ASSET_COLORS = {
 }
 VERDICT_COLOR = {
     "Safe Haven": "#2E7D32",
+    "Safe Haven*": "#558B2F",
     "Weak Haven": "#F9A825",
+    "Diversifier": "#1976D2",
     "Risky Asset": "#C62828",
 }
 
@@ -88,7 +90,7 @@ def tab_overview() -> None:
 
     st.divider()
 
-    final = pd.read_csv(ROOT / "validationfinal/final_judgment.csv")
+    final = pd.read_csv(ROOT / "validation/final_judgment.csv")
     verdict_counts = final["verdict"].value_counts()
     safe_cnt = int(verdict_counts.get("Safe Haven*", 0))
     weak_cnt = int(verdict_counts.get("Weak Haven", 0))
@@ -504,8 +506,8 @@ def tab_event_study() -> None:
     section("이벤트 스터디 — C1 평균적 초과수익률 검증", "#2563EB")
     st.caption("MacKinlay(1997) CAR/CSAR · BH-FDR 다중비교 보정 · Placebo 검정")
 
-    event = pd.read_csv(ROOT / "validationfinal/event_study_car_bh.csv")
-    placebo = pd.read_csv(ROOT / "validationfinal/event_study_placebo.csv")
+    event = pd.read_csv(ROOT / "validation/event_study_car_bh.csv")
+    placebo = pd.read_csv(ROOT / "validation/event_study_placebo.csv")
 
     btc = event[event["asset"] == "BTC"].copy()
 

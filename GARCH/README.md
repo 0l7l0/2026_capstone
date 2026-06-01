@@ -35,23 +35,23 @@
 입력 파일:
 
 ```text
-../datapipeline/master_data/master_data.csv
+../DataPipeline/processed_data/final/master_data.csv
 ```
 
 ### 주요 컬럼
 
-| 컬럼              | 설명                          |
-| --------------- | --------------------------- |
-| BTC             | BTC 로그 수익률                  |
-| Gold            | 금 로그 수익률                    |
-| SP500           | S&P500 로그 수익률               |
-| NASDAQ          | NASDAQ 로그 수익률               |
-| VIX             | 시장 공포 지수 (변동성 지수)                       |
-| fear_greed      | CNN Fear & Greed            |
-| fear_greed_lag1 | 전일 CNN 탐욕·공포 지수          |
-| GPR_custom      | 자체 제작 지정학 리스크 지수 (F3_z)                 |
-| GPR_zscore      |  Caldara & Iacoviello (2022) 공식 GPR Z-score|
-| event_name      | 이벤트 구간 레이블                  |
+| 컬럼              | 설명                                          |
+| --------------- | ------------------------------------------- |
+| BTC             | BTC 로그 수익률                                  |
+| Gold            | 금 로그 수익률                                    |
+| SP500           | S&P500 로그 수익률                               |
+| NASDAQ          | NASDAQ 로그 수익률                               |
+| VIX             | 시장 공포 지수 (변동성 지수)                           |
+| fear_greed      | CNN Fear & Greed                            |
+| fear_greed_lag1 | 전일 CNN 탐욕·공포 지수                             |
+| GPR_custom      | 자체 제작 지정학 리스크 지수 (F3_z)                     |
+| GPR_zscore      | Caldara & Iacoviello (2022) 공식 GPR Z-score  |
+| event_name      | 이벤트 구간 레이블                                  |
 
 ### 표본 구성
 
@@ -65,10 +65,10 @@ returns_pct = BTC × 100
 
 ### 전처리
 
-* 외생변수 Z-score 표준화
-* X(t−1) 시차 적용
-* 시간순 정렬
-* 결측치 제거
+* 외생변수 Z-score 표준화 (`GPR_custom`, `GPR_zscore`, `VIX`, `fear_greed_lag1` → `_scaled` 컬럼)
+* X(t−1) 시차 적용 (fit 함수 내 `shift(1)`)
+* 이벤트 순서 기준 시간순 정렬
+* 결측치 제거 (BTC + 외생변수 4종 기준)
 
 ---
 
@@ -115,7 +115,7 @@ ln h(t)
 
 ### GARCH-X 모델 구성
 
-| 모델     | 외생변수                               | 목적                |
+| 모델     | 외생변수 (_scaled 버전 사용)              | 목적                |
 | ------ | ---------------------------------- | ----------------- |
 | Model1 | GPR_zscore                         | 공식 GPR 단독 벤치마크    |
 | Model2 | GPR_custom                         | 자체 GPR 단독 설명력     |
@@ -133,6 +133,8 @@ ln h(t)
 | EGARCH_E4 | GPR_custom + VIX + fear_greed_lag1 | 통합 변수 강건성      |
 | EGARCH_E5 | ΔGPR + VIX + fear_greed_lag1       | GPR 변화율 기반 검증  |
 | EGARCH_E6 | GPR Dummy + VIX + fear_greed_lag1  | 이벤트 더미 기반 검증   |
+
+> EGARCH 추정 시 GARCH 기준선으로 GARCH_M3(Model3)·GARCH_M2(Model2)도 함께 포함하여 비교
 
 ### γ 해석 기준
 
@@ -220,22 +222,28 @@ AIC와 BIC는 로그우도(Log-Likelihood)를 기반으로 하되, 모형 복잡
 
 ## 6. 분석 방법론 (Methodology)
 
-| Step | 내용 | 세부 방법 |
-|------|------|-----------|
-| 0 | 라이브러리·환경 설정 | scipy MLE 직접 구현 (`arch` 라이브러리 외생변수 한계 우회) |
-| 1 | master_data.csv 로드 | 컬럼 확인, event_name 정합성 검증 |
-| 2 | 분석 데이터 준비 | BTC×100 단위 변환, Z-score 표준화, X(t-1) 시차 생성, 시간순 정렬 |
-| 3 | GARCH-X MLE 함수 정의 | Student-t 로그우도, bounds 설정, clip/strict 분산 처리 방식 |
-| 4 | Model1~5 추정 (clip) | 10개 초기값 격자 탐색(L-BFGS-B), 최저 음의 로그우도 채택 |
-| 5 | SE·p-value 계산 | numdifftools Richardson 외삽법 Hessian + delta method |
-| 6 | γ 계수 요약 | 외생변수별 방향·유의성 정리 |
-| 7 | 모델 비교 (AIC/BIC) | AIC·BIC 기준 최적 모델 선택 |
-| 8 | 분산 처리 강건성 | clip vs strict 방식 최적 모델 일치 여부 확인 |
-| 9 | 이벤트 더미 강건성 | 이벤트별 구조 차이 통제 (hormuz_crisis 기준, 4개 더미 추가) |
-| 10-1~6 | EGARCH 강건성 | 비대칭 변동성 구조에서 GARCH 결론 유지 여부 확인 |
-| 11 | 시각화 | 조건부 변동성 시계열·γ 계수 막대그래프·AIC/BIC 비교 |
-| 12 | 결과 저장 | CSV 10종 + PNG 5종 |
-| 13 | 최종 결론 | GARCH·이벤트 더미·EGARCH 통합 해석 |
+| Step     | 내용               | 세부 방법                                                               |
+| -------- | ---------------- | ------------------------------------------------------------------- |
+| 0        | 라이브러리·환경 설정      | scipy MLE 직접 구현 (`arch` 라이브러리 외생변수 한계 우회)                           |
+| 1        | master_data.csv 로드 | 컬럼 확인, event_name 정합성 검증                                            |
+| 2        | 분석 데이터 준비        | BTC×100 단위 변환, Z-score 표준화, X(t-1) 시차 생성, 이벤트 순서 기준 정렬, 결측치 제거      |
+| 3        | GARCH-X MLE 함수 정의 | Student-t 로그우도, bounds 설정, clip/strict 분산 처리 방식                     |
+| 4        | Model1~5 추정 (clip) | 10개 초기값 격자 탐색(L-BFGS-B), 최저 음의 로그우도 채택                              |
+| 5        | SE·p-value 계산    | numdifftools Richardson 외삽법 Hessian + delta method                  |
+| 6        | γ 계수 요약          | 외생변수별 방향·유의성 정리                                                     |
+| 7        | 모델 비교 (AIC/BIC)  | AIC·BIC 기준 최적 모델 선택                                                 |
+| 8        | 분산 처리 강건성        | clip vs strict 방식 최적 모델 일치 여부 확인                                    |
+| 9        | 이벤트 더미 강건성       | Model3·Model5에 이벤트 더미 추가 (hormuz_crisis 기준, drop_first=True)         |
+| 10       | EGARCH 강건성       | EGARCH_E1~E6 추정 (numba 가속), GARCH_M2·M3 기준선 재사용                     |
+| 10-1     | EGARCH MLE 함수 정의  | numba @njit 가속 코어 함수                                                |
+| 10-2     | EGARCH 추정 함수     | fit_egarch_x 정의, GARCH 기준선 재사용                                      |
+| 10-3     | EGARCH 6개 모델 추정  | E1~E6 추정, 계수 long/wide format 저장                                    |
+| 10-4     | EGARCH p-value 계산 | Hessian 기반 SE, delta method                                         |
+| 10-5     | EGARCH 강건성 요약    | 외생변수 유의성·비대칭 효과 정리                                                  |
+| 10-6     | EGARCH 시각화       | 조건부 변동성 비교·GPR 계수 비교·AIC/BIC 차트                                    |
+| 11       | GARCH 기본 결과 시각화  | 조건부 변동성 시계열·γ 계수 막대그래프·AIC/BIC 비교                                  |
+| 12       | 결과 저장            | CSV 17종 + PNG 5종                                                    |
+| 13       | 최종 결론            | ADF 정상성 검정·Ljung-Box 잔차 검정·GARCH·이벤트 더미·EGARCH 통합 해석               |
 
 ---
 
@@ -249,7 +257,7 @@ AIC와 BIC는 로그우도(Log-Likelihood)를 기반으로 하되, 모형 복잡
 | Model4 | 공식 GPR + 시장심리    | 9471.506 | 9515.444 | 0.9944 |
 | Model5 | 커스텀 GPR + 시장심리   | 9471.637 | 9515.575 | 0.9958 |
 | Model2 | 커스텀 GPR 단독       | 9472.586 | 9505.540 | 0.9930 |
-| Model1 | 공식 GPR 단독        | 9472.71 | 9505.664 | 0.9930 |
+| Model1 | 공식 GPR 단독        | 9472.710 | 9505.664 | 0.9930 |
 
 해석:
 
@@ -261,16 +269,16 @@ AIC와 BIC는 로그우도(Log-Likelihood)를 기반으로 하되, 모형 복잡
 
 ### 7.2 외생변수 γ 결과
 
-| 모델     | 변수              |       γ | p-value |
-| ------ | --------------- | ------: | ------: |
-| Model1 | GPR_zscore      | -0.01057 |   0.8867 |
-| Model2 | GPR_custom      | 0.03186 |   0.7092 |
-| Model3 | VIX             | 0.00611 |   0.9527 |
-| Model3 | fear_greed_lag1 |  0.1625 |   0.0467 |
-| Model4 | GPR_zscore      |  0.02594 |   0.7051 |
-| Model4 | fear_greed_lag1 |  0.16872 |   0.0438 |
-| Model5 | GPR_custom      |  0.03994 |   0.6066 |
-| Model5 | fear_greed_lag1 |  0.16464 |   0.0444 |
+| 모델     | 변수              |        γ | p-value |
+| ------ | --------------- | -------: | ------: |
+| Model1 | GPR_zscore      | -0.01057 |  0.8867 |
+| Model2 | GPR_custom      |  0.03186 |  0.7092 |
+| Model3 | VIX             |  0.00611 |  0.9527 |
+| Model3 | fear_greed_lag1 |  0.16250 |  0.0467 |
+| Model4 | GPR_zscore      |  0.02594 |  0.7051 |
+| Model4 | fear_greed_lag1 |  0.16872 |  0.0438 |
+| Model5 | GPR_custom      |  0.03994 |  0.6066 |
+| Model5 | fear_greed_lag1 |  0.16464 |  0.0444 |
 
 핵심 해석:
 
@@ -328,7 +336,7 @@ Fear & Greed 변수는 EGARCH 구조에서도 반복적으로 유의.
 해석:
 
 * 레버리지 효과는 통계적으로 유의하지 않음
-* EGARCH는 “비대칭성 입증”보다는 강건성 검증 역할
+* EGARCH는 "비대칭성 입증"보다는 강건성 검증 역할
 
 ---
 
@@ -361,31 +369,32 @@ Fear & Greed 변수는 EGARCH 구조에서도 반복적으로 유의.
 | `garch_gamma_results.csv`              | GARCH 외생변수 γ 계수 및 p-value 결과                |
 | `garch_model_params.csv`               | 각 GARCH 모델의 전체 추정 파라미터(ω·α·β·γ·ν) 저장        |
 | `garch_event_dummy_comparison.csv`     | 이벤트 더미 포함 전·후 GARCH 모델 성능 비교                |
-| `garch_conditional_volatility.csv`     | 시점별 조건부 변동성 σ(t) 저장                         |
+| `garch_conditional_volatility.csv`     | AIC 기준 최적 모델의 시점별 조건부 변동성 σ(t) 저장           |
 | `egarch_model_comparison.csv`          | EGARCH 모델 간 AIC/BIC 비교 결과                   |
 | `egarch_exog_coefficients.csv`         | EGARCH 외생변수 계수(δ) 및 p-value 결과              |
 | `garch_egarch_integrated_summary.csv`  | GARCH·EGARCH 전체 모델 비교 통합 요약표                |
-| `egarch_step_b3_coefficients_long.csv` | EGARCH 계수 long-format 저장 (Plotly·Heatmap용)  |
-| `egarch_step_b3_coefficients_wide.csv` | EGARCH 계수 wide-format 저장 (논문 표 정리용)         |
+| `egarch_step_b3_coefficients_long.csv` | EGARCH 계수 long-format 저장  |
+| `egarch_step_b3_coefficients_wide.csv` | EGARCH 계수 wide-format 저장         |
 | `garch_significance_matrix.csv`        | γ/δ 계수 유의성 여부(0/1) 정리 행렬                    |
 | `garch_persistence.csv`                | 모델별 α·β·α+β persistence 비교                  |
-| `garch_model_ranking.csv`              | AIC 기준 GARCH/EGARCH 모델 순위표                  |
-| `garch_event_volatility.csv`           | 이벤트 ±30일 구간 평균·최대 변동성 비교                    |
-| `garch_gamma_long.csv`                 | γ 계수 long-format 저장 (대시보드 interactive 시각화용) |
+| `garch_model_ranking.csv`              | AIC 기준 GARCH 모델 순위표                         |
+| `garch_event_volatility.csv`           | 이벤트 ±30일 구간 평균·최대 변동성 비교 |
+| `garch_gamma_long.csv`                 | γ 계수 long-format 저장  |
+| `adf_test.csv`                         | ADF 정상성 검정 결과                  |
+| `ljung_box.csv`                        | Ljung-Box 잔차 자기상관 검정 결과           |
 
 ---
 
 ### PNG
 
-| 파일                               | 내용                          |
-| -------------------------------- | --------------------------- |
-| `garch_conditional_vol.png`      | GARCH 조건부 변동성 시계열 그래프       |
-| `garch_gamma_coefficients.png`   | γ 계수 및 유의성 비교 시각화           |
-| `garch_model_comparison.png`     | GARCH 모델별 AIC/BIC 비교 차트     |
-| `egarch_model_aic_bic.png`       | EGARCH 모델 간 적합도(AIC/BIC) 비교 |
+| 파일                               | 내용                                        |
+| -------------------------------- | ----------------------------------------- |
+| `garch_conditional_vol.png`      | GARCH 조건부 변동성 시계열 그래프                     |
+| `garch_gamma_coefficients.png`   | γ 계수 및 유의성 비교 시각화                         |
+| `garch_model_comparison.png`     | GARCH 모델별 AIC/BIC 비교 차트                   |
+| `egarch_model_aic_bic.png`       | EGARCH 모델 간 적합도(AIC/BIC) 비교               |
 | `egarch_cond_vol_comparison.png` | GARCH vs EGARCH 조건부 변동성 비교  |
-| `egarch_gpr_coef_compare.png`    | GPR 관련 계수 비교 시각화            |
-
+| `egarch_gpr_coef_compare.png`    | GPR 관련 계수 비교 시각화           |
 
 ---
 

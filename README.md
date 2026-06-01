@@ -10,10 +10,10 @@
 
 | 항목 | 내용 |
 |------|------|
-| 분석 기간 | 2019-01-02 ~ 2026-04-30 (1,827 거래일) |
+| 분석 기간 | 2019-01-02 ~ 2026-04-30 (1,800 거래일) |
 | 분석 이벤트 | 6개 지정학 위기 (이벤트 창 ±17 거래일) |
 | 분석 자산 | BTC, Gold, SP500, NASDAQ, TLT, DXY |
-| 판정 기준 | Baur & Lucey (2010) 3조건 통합 판정 (부호 기준 엄격 적용) |
+| 판정 기준 | Baur & Lucey (2010) 3조건 통합 판정 |
 
 **분석 대상 이벤트**
 
@@ -40,7 +40,7 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
         └──────────┬────────────────────┘
                    ▼
             master_data.csv
-            (1,827 거래일 × 19 컬럼)
+            (1,800 거래일 × 19 컬럼)
                    │
        ┌───────────┼───────────┐
        ▼           ▼           ▼
@@ -58,15 +58,13 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 
 ## 3. 분석 방법론
 
-### 3조건 통합 판정 (Baur & Lucey 2010 부호 기준)
+### 3조건 통합 판정 (Baur & Lucey 2010)
 
 | 조건 | 방법 | Safe-Haven 판정 기준 |
 |------|------|----------------------|
-| C1 이벤트 스터디 | MacKinlay (1997) CAR, BH-FDR, Placebo | **CAR ≥ 0 부호 기준** (음수 미달) |
-| C2 분위수 회귀 | Koenker & Bassett (1978), HAC SE | **β ≤ 0 부호 기준** at τ ≤ 0.10 (양수 미달) |
-| C3 GARCH | GARCH-X Student-t MLE, EGARCH 강건성 | GPR γ ≤ 0 또는 비유의 (변동성 비연동) |
-
-> ⚠ **2026-05-29 정정**: 이전 채점 로직이 "음수 CAR도 비유의면 C1 통과"로 처리하던 분기 제거. Baur & Lucey (2010) 원래 정의 (부호 기준)에 일관 적용. 이스라엘-하마스(CAR=-0.029)·이스라엘-이란 충돌(CAR=-0.063)이 음수 CAR로 C1 미달 → Weak Haven에서 Diversifier로 강등.
+| C1 이벤트 스터디 | MacKinlay (1997) CAR, BH-FDR, Placebo | CAR > 0 (비유의도 통과) |
+| C2 분위수 회귀 | Koenker & Bassett (1978), HAC SE | β < 0, p < 0.05 at τ ≤ 0.10 |
+| C3 GARCH | GARCH-X Student-t MLE, EGARCH 강건성 | GPR γ 비유의 (변동성 비연동) |
 
 ### 폴더별 분석 내용
 
@@ -74,61 +72,60 @@ GDELT GKG (BigQuery)          야후 파이낸스 / FRED / CNN
 |------|------|-------------|
 | `DataPipeline/` | GPR 커스텀 지수 생성, master_data 구축 | BigQuery GDELT GKG, F3 공식 |
 | `EDA/` | 기술통계, 상관관계, ARCH 검정 | ADF, Ljung-Box, ARCH-LM |
-| `EventStudy/` | 이벤트별 CAR 분석 | CMRM / Market Model, Block Bootstrap (5,000회), BH-FDR, Wild Bootstrap (호르무즈 보강) |
+| `EventStudy/` | 이벤트별 CAR 분석 | CMRM / Market Model, Block Bootstrap (5,000회), BH-FDR |
 | `Quantile/` | 위기 분위수별 β 추정 | HAC Newey-West SE, LOO 강건성, 블록 부트스트랩 |
-| `GARCH/` | BTC 조건부 변동성 분석 | GARCH-X / EGARCH Student-t MLE, scipy 직접 구현, **Ljung-Box 잔차 진단 (사용자 검증 추가)** |
+| `GARCH/` | BTC 조건부 변동성 분석 | GARCH-X / EGARCH Student-t MLE, scipy 직접 구현 |
 | `Dashboard/` | 결과 통합 시각화 | Streamlit + Plotly |
-| `validation/` | 독립 검증 | catalog v1.6, **33개 학술 표준 항목 PASS 33/0/0 + 학술 권고 7건** |
-
-> 독립 검증 (`validation/`): catalog v1.6 기준 자동 검증 PASS 33 / WARN 0 / FAIL 0 (red_flag 위반 0건). 매트릭스 ⚠ 표기는 학술 해석 권고(사람 판단)로 §7에 7건 별도 정리.
+| `Validation/` | 독립 검증 | catalog v1.6, 33개 학술 표준 항목 |
 
 ---
 
 ## 4. 최종 결론
 
-### 이벤트별 판정 (2026-05-29 정정본)
+### 이벤트별 판정
 
 | 이벤트 | C1 이벤트 스터디 | C2 분위수 회귀 | C3 GARCH | 점수 | 판정 |
 |--------|:---:|:---:|:---:|:---:|------|
-| 호르무즈 위기 | ✅ (CAR=+0.081) | ✅ (β=-0.012) | ✅ | 3/3 | **Safe Haven\*** |
-| 솔레이마니 암살 | ✅ (CAR=+0.142) | ❌ | ✅ | 2/3 | Weak Haven |
-| 러-우 전쟁 | ✅ (CAR=+0.113) | ❌ | ✅ | 2/3 | Weak Haven |
-| **이스라엘-하마스** | ❌ **(CAR=-0.029 음수)** | ❌ | ✅ | **1/3** | **Diversifier** |
-| **이스라엘-이란 충돌** | ❌ **(CAR=-0.063 음수)** | ❌ | ✅ | **1/3** | **Diversifier** |
-| 미-이스라엘-이란 | ✅ (CAR=+0.132) | ❌ | ✅ | 2/3 | Weak Haven |
-
-> \* 호르무즈 Safe Haven\* = 부호 기준 3/3 통과이나 BH 보정 후 비유의 + Placebo 미구분으로 **통계 강도 약함**. Wild Bootstrap(±3·±17) 보강 결과는 `validation/event_study_car_wild_bh.csv` 참조.
-
-### 분포 (Baur & Lucey 2010 부호 기준 엄격 적용)
-
-- **Safe Haven (강도 강함)**: 0건
-- **Safe Haven\* (강도 약함)**: 1건 (호르무즈)
-- **Weak Haven**: 3건 (솔레이마니, 러-우, 미-이스라엘-이란)
-- **Diversifier**: 2건 (이스라엘-하마스, 이스라엘-이란 — 음수 CAR로 C1 미달)
-- **Risky Asset**: 0건
+| 호르무즈 위기 | ✅ | ✅ | ✅ | 3/3 | **Safe Haven*** |
+| 솔레이마니 암살 | ✅ | ❌ | ✅ | 2/3 | Weak Haven |
+| 러-우 전쟁 | ✅ | ❌ | ✅ | 2/3 | Weak Haven |
+| 이스라엘-하마스 | ❌ | ❌ | ✅ | 1/3 | Diversifier |
+| 이스라엘-이란 충돌 | ❌ | ❌ | ✅ | 1/3 | Diversifier |
+| 미-이스라엘-이란 | ✅ | ❌ | ✅ | 2/3 | Weak Haven |
 
 ### 핵심 발견
 
-- **BTC는 안전자산이 아니다** — Strong Safe Haven 0건, 약한 Safe Haven\* 1건, Diversifier 2건
-- **위기 시 동조화 강화** — SP500-BTC 동조화가 극단 하락(τ=0.01)에서 평상시(τ=0.50) 대비 2.2배 증가
-- **GPR 상승이 동조화를 강화** — 상호작용항 δ=+0.005 (p=0.037), Safe Haven 조건과 정반대
-- **GPR은 변동성에 유의하지 않음** — GARCH·EGARCH 전 모델에서 GPR γ 비유의 (p=0.58~0.96)
-- **시장 심리(Fear&Greed)가 BTC 변동성 설명** — fear_greed_lag1 γ=+0.157 (p=0.038), EGARCH에서도 반복 유의 (단 C3 채점은 지정학 변수 한정 운영 정의)
-- **호르무즈 Safe Haven\* 판정의 통계 강도 약함** — Wild Bootstrap·Placebo·BH 검정 결과 분산, 분위수 회귀 C2 의존도 높음
-- **이스라엘-하마스·이스라엘-이란은 BTC도 시장과 함께 하락** — 음수 CAR (-0.029, -0.063)로 C1 미달, Diversifier 분류
-- **Ljung-Box 잔차 진단** — 표준화 잔차 자기상관 없음(3/3 lag), 잔차² lag 5에서 ARCH 잔존(EGARCH가 보완)
+- **BTC는 일관된 Safe Haven으로 확인되지 않음** — 6개 이벤트 중 C2(극단 하락 구간 Safe Haven 조건)를 충족한 사례는 호르무즈 위기 1건뿐
+- **위기 시 주식시장과 동조화 강화** — 5개 이벤트에서 하방 분위수(τ≤0.10) SP500 계수가 유의한 양(+)으로 나타남
+- **극단 하락 국면에서도 분산 기능이 제한적** — 시장 스트레스가 커질수록 BTC-주식 연계성이 유지되거나 강화됨
+- **GPR 직접 효과는 확인되지 않음** — 분위수 회귀 γ 계수와 GARCH γ 계수 모두 대부분 비유의
+- **BTC 변동성은 지정학 리스크보다 시장 심리에 민감** — Fear & Greed 계수는 GARCH 및 EGARCH에서 반복적으로 유의
+- **이벤트 스터디 역시 Strong Safe Haven 증거를 제공하지 못함** — 6개 이벤트 중 4개에서 양(+) CAR가 관측되었으나 BH-FDR 보정 후 전 이벤트 비유의
 
 ---
 
 ## 5. 대시보드 이미지
 
-<!-- 대시보드 스크린샷 추가 예정 -->
+| 탭 | 스크린샷 |
+|---|---|
+| 통합 판정 | ![통합 판정](screenshots/screenshot_01_overview.png) |
+| GPR 파이프라인 | ![GPR 파이프라인](screenshots/screenshot_02_gpr.png) |
+| EDA | ![EDA](screenshots/screenshot_03_eda.png) |
+| 이벤트 스터디 | ![이벤트 스터디](screenshots/screenshot_04_event_study.png) |
+| 분위수 회귀 | ![분위수 회귀](screenshots/screenshot_05_quantile.png) |
+| GARCH | ![GARCH](screenshots/screenshot_06_garch.png) |
 
 ---
 
 ## 6. 팀원 역할
 
-<!-- 팀원 이름 및 담당 파트 추가 예정 -->
+| 이름 | 역할 |
+|------|------|
+| 경승기 | 이벤트 스터디, 독립 검증 |
+| 류황규 | 프로젝트 총괄 및 일정 관리, GARCH-X · EGARCH 분석 |
+| 이민진 | EDA, 대시보드 개발 |
+| 홍승우 (팀장) | 데이터 수집 및 전처리, 이벤트 스터디 |
+| 황민정 | 데이터 파이프라인 관리, Custom GPR 지수 설계, 분위수 회귀 분석 |
 
 ---
 
@@ -150,7 +147,7 @@ pip install pandas numpy scipy statsmodels quantreg arch numdifftools \
 4. EventStudy/event_study.ipynb               ← CAR·Placebo·BH 분석
 5. Quantile/quantile_regression.ipynb         ← 분위수 회귀
 6. GARCH/GARCH.ipynb                          ← GARCH-X·EGARCH 분석
-7. streamlit run Dashboard/dashboard_ui.py    ← 대시보드 실행
+7. streamlit run Dashboard/app.py             ← 대시보드 실행
 ```
 
 ### 데이터 위치
@@ -160,8 +157,6 @@ pip install pandas numpy scipy statsmodels quantreg arch numdifftools \
 | 통합 분석 데이터 | `DataPipeline/processed_data/master_data.csv` |
 | 자산 수익률 | `DataPipeline/processed_data/returns.csv` |
 | 최종 판정 | `Dashboard/result_csv_png/final_judgment.csv` |
-| 독립 검증 보고서 | `validation/VALIDATION_REPORT.md` |
-| Ljung-Box 잔차 진단 | `validation/garch_ljung_box.csv` |
 
 ---
 
@@ -173,7 +168,6 @@ pip install pandas numpy scipy statsmodels quantreg arch numdifftools \
 **이벤트 스터디**
 - MacKinlay, A. C. (1997). Event Studies in Economics and Finance. *Journal of Economic Literature*, 35(1), 13–39.
 - Benjamini, Y., & Hochberg, Y. (1995). Controlling the False Discovery Rate. *Journal of the Royal Statistical Society: Series B*, 57(1), 289–300.
-- Davidson, R., & MacKinnon, J. G. (1999). The size distortion of bootstrap tests. *Econometric Theory*, 15(3), 361–376. *(Wild Bootstrap, 호르무즈 보강)*
 
 **분위수 회귀**
 - Koenker, R., & Bassett, G. (1978). Regression Quantiles. *Econometrica*, 46(1), 33–50.
